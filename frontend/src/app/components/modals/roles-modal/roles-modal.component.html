@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Crear nuevo rol</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="fill" class="w-full">
+    <mat-label>Nombre del rol</mat-label>
+    <input matInput [(ngModel)]="nuevoRol.name" />
+  </mat-form-field>
+<!-- Botones para cancelar y guardar -->
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardarRol()">Crear rol</button>
+</mat-dialog-actions>
+
+</mat-dialog-content>

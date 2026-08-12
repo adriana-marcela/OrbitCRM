@@ -1,0 +1,351 @@
+<div class="close-button-container">
+    <button mat-icon-button mat-dialog-close aria-label="Cerrar" class="floating-close-button">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<div mat-dialog-content class="mat-mdc-card-content p-32">
+    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+        <!-- Pestaña para la información general -->
+        <mat-tab label="Información General">
+            <form [formGroup]="collaboratorForm" style="margin-top: 32px" class="collaborator-info-modal">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="collaborator-header">
+                            <!-- Título con el nombre del colaborador -->
+                            <mat-card-title class="collaborator-name">{{ data.collaborator.name }}
+                                {{ data.collaborator.lastname }}</mat-card-title>
+
+							 <!-- Subtítulo con la posición del colaborador -->
+							 <!-- <mat-card-subtitle class="collaborator-position"> Se sugiere que la foto sea en formato 1:1  mínimo de 1080 x 1080.</mat-card-subtitle> -->
+
+                            <!-- Zona para subir una fotografía -->
+                            <div class="upload-container">
+                                <ngx-dropzone *ngIf="!imagePreview" (change)="onFileDropped($event)"
+                                    class="custom-dropzone" [multiple]="false">
+                                    <ngx-dropzone-label>
+                                        <div class="dropzone-content">
+                                            <mat-icon class="upload-icon">cloud_upload</mat-icon>
+                                        </div>
+                                    </ngx-dropzone-label>
+                                </ngx-dropzone>
+
+                                <!-- Fotografia subida -->
+                                <div *ngIf="imagePreview" class="uploaded-image">
+                                    <img [src]="imagePreview" alt="Uploaded Image" class="uploaded-preview" />
+
+                                    <!-- Botón para eliminar el Logo -->
+                                    <button mat-button color="warn" (click)="onRemove(files[0])"
+                                        style="margin-top: 10px;">
+                                        Eliminar fotografía
+                                    </button>
+                                </div>
+
+                                <!-- Hint para la recomendacion del formato de la imagen -->
+                                <span class="upload-hint" *ngIf="!imagePreview"><p><em>Recomendación para la foto: formato cuadrado 1:1</em></p></span>
+                            </div>
+                        </div>
+                        <!-- Campo para la descripción -->
+                        <div class="collaborator-description agendaForm">
+                            <mat-card-title class="collaborator-name">Información sobre el colaborador</mat-card-title>
+                            <mat-form-field appearance="outline" class="w-100" color="primary">
+                                <textarea matInput formControlName="description" maxlength="150" style="height: 105px !important;"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <!-- Campo para los nombres -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>person</mat-icon>
+                                    <mat-label>Nombre</mat-label>
+                                    <input matInput formControlName="name" type="text" maxlength="30" (input)="validateText($event)"/>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para los apellidos -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>person</mat-icon>
+                                    <mat-label>Apellidos</mat-label>
+                                    <input matInput formControlName="lastname" type="text" maxlength="30" (input)="validateText($event)"/>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Campo para el tipo de documento -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>assignment_ind</mat-icon>
+                                    <mat-label>Tipo de Documento</mat-label>
+                                    <mat-select formControlName="documentType">
+                                        <mat-option value="CC">Cédula de ciudadanía</mat-option>
+                                        <mat-option value="CE">Cédula de extranjería</mat-option>
+                                        <mat-option value="PP">Pasaporte</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para el número de documento -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>fingerprint</mat-icon>
+                                    <mat-label>Número de documento</mat-label>
+                                    <input matInput formControlName="documentNumber" type="number" (input)="onInput($event, 12)"/>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Campo para el correo electrónico -->
+						<div class="row">
+						<div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>email</mat-icon>
+                            <mat-label>Correo electrónico</mat-label>
+                            <input matInput formControlName="email" type="email" readonly maxlength="50" class="readonly-style"/>
+                        </mat-form-field>
+						</div>
+
+						<!-- Campo para el cumpleaños con calendario funcional -->
+						<div class="col-lg-6">
+							<mat-form-field appearance="outline" class="w-100" color="primary">
+	  						<mat-icon matPrefix (click)="picker.open()" class="clickable-icon">calendar_today</mat-icon>
+	  						<mat-label>Fecha de nacimiento (dd/mm/aaaa)</mat-label>
+
+	  						<input matInput [matDatepicker]="picker" formControlName="birthday" readonly/>
+
+	  						<!-- Toggle oculto para habilitar funcionalidad -->
+	  						<mat-datepicker-toggle [for]="picker" style="display: none"></mat-datepicker-toggle>
+	  						<mat-datepicker #picker></mat-datepicker>
+
+	  						<mat-error *ngIf="hasBirthDateError()">
+								{{ getBirthDateErrorMessage() }}
+	  						</mat-error>
+							</mat-form-field>
+  						</div>
+						</div>
+
+                        <!-- Campo para el país -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>public</mat-icon>
+                                    <mat-label>País</mat-label>
+                                    <mat-select formControlName="country">
+                                        <mat-option *ngFor="let country of countries" [value]="country">
+                                            {{ country }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para el departamento -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>place</mat-icon>
+                                    <mat-label>Departamento</mat-label>
+                                    <input matInput formControlName="department" maxlength="30" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Campo para la ciudad -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>location_city</mat-icon>
+                                    <!-- Icono para ciudad -->
+                                    <mat-label>Ciudad</mat-label>
+                                    <input matInput formControlName="city" maxlength="30" />
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para la dirección -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>home</mat-icon>
+                                    <mat-label>Dirección</mat-label>
+                                    <input matInput formControlName="address" maxlength="60" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Campo para el teléfono -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>phone</mat-icon>
+                                    <mat-label>Teléfono</mat-label>
+                                    <input matInput formControlName="phone"
+                                    (input)="onInput($event, 15, collaboratorForm.get('phone'), 'phone')" />
+                                </mat-form-field>
+                            </div>
+                            <!-- Campo para el rol -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>work</mat-icon>
+                                    <mat-label>Rol</mat-label>
+                                    <mat-select formControlName="rol">
+                                        <mat-option *ngFor="let rol of roles" [value]="rol.id" [disabled]="rol.name === 'Super Admin'">
+                                            {{ rol.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div *ngIf="collaboratorForm.get('phone')?.invalid && collaboratorForm.get('phone')?.touched" class="invalid-feedback">
+                            <div class="col-lg-6" *ngIf="collaboratorForm.get('phone')?.errors?.['invalidPhone']" class="validacion-tel">
+                                <mat-error>
+                                    Número no válido. Siga el formato: +[código de país][número].
+                                </mat-error>
+                            </div>
+                        </div>
+                        <!-- Botón para guardar los cambios o eliminar colaborador -->
+                        <div class="footer-button">
+                            <button mat-flat-button color="warn" type="button" (click)="deleteCollaborator()"
+                                style="margin-right: 10px">
+                                <mat-icon>delete</mat-icon>
+                                Eliminar colaborador
+                            </button>
+                            <button mat-flat-button color="primary" type="button" (click)="saveGeneralInfo()"
+                                [disabled]="!collaboratorForm.valid">
+                                <mat-icon>save</mat-icon>
+                                Guardar cambios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-tab>
+
+        <!-- Pestaña para la información bancaria -->
+        <mat-tab label="Información Bancaria">
+            <form [formGroup]="bankForm" style="margin-top: 25px" class="collaborator-bank-info-modal">
+                <div class="row">
+                    <!-- Campo para el tipo de cuenta -->
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>account_balance_wallet</mat-icon>
+                            <mat-label>Tipo de Cuenta</mat-label>
+                            <!-- Lista desplegable -->
+                            <mat-select formControlName="accountType">
+                                <mat-option value="ahorros">Cuenta de ahorros</mat-option>
+                                <mat-option value="corriente">Cuenta corriente</mat-option>
+								<mat-option value="Daviplata">Daviplata</mat-option>
+								<mat-option value="Nequi">Nequi</mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Campo para el banco -->
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>account_balance</mat-icon>
+                            <mat-label>Banco</mat-label>
+                            <mat-select formControlName="bank">
+                                <mat-option *ngFor="let banco of bancosList" [value]="banco">
+                                    {{ banco }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Campo para el titular de la cuenta -->
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>person</mat-icon>
+                            <mat-label>Titular de la cuenta</mat-label>
+                            <input matInput formControlName="holderBank" maxlength="30"/>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Campo para el número de cuenta -->
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>numbers</mat-icon>
+                            <mat-label>Número de cuenta</mat-label>
+                            <input matInput formControlName="accountNumber" (input)="onInput($event, 20, bankForm.get('accountNumber'))"/>
+                        </mat-form-field>
+                        <div
+                            *ngIf="
+                                bankForm.get('accountNumber')?.invalid &&
+                                bankForm.get('accountNumber')?.touched
+                            "
+                            class="invalid-feedback"
+                        >
+                            <mat-error *ngIf="
+                                            bankForm.get('accountNumber')?.hasError('maxlength') ||
+                                            bankForm.get('accountNumber')?.hasError('minlength')"
+                                            style="margin: -15px 0px 15px;">
+                            El número de cuenta debe tener al menos entre 8 a 20 caracteres
+                            </mat-error>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón para guardar los cambios -->
+                <div class="footer-button">
+                    <button mat-flat-button color="primary" (click)="saveBankInfo()" [disabled]="!bankForm.valid">
+                        <mat-icon>save</mat-icon>
+                        Guardar cambios
+                    </button>
+                </div>
+            </form>
+        </mat-tab>
+        <mat-tab label="Clientes asignados">
+            <div class="table-section table-responsive">
+                <table mat-table [dataSource]="dataSourceClients" class="mat-elevation-z8">
+                    <!-- fullname -->
+                    <!-- Modo edición -->
+                    <ng-container matColumnDef="fullname">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Nombre</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content">
+                            <mat-form-field class="w-100" color="primary" *ngIf="addAssigendClient && element.new == true">
+                                <mat-select [(ngModel)]="element.id" placeholder="Selecciona el cliente">
+                                    <mat-option *ngFor="let client of clients" [value]="client.id">
+                                        {{ client.fullname }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <span *ngIf="!addAssigendClient || element.new != true">{{ element.fullname }}</span>
+                        </td>
+                    </ng-container>
+                    <!-- corporate -->
+                    <ng-container matColumnDef="corporate">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Nombre comercial</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content">
+                            <span>{{ element.corporate_name }}</span>
+                        </td>
+                    </ng-container>
+                    <!-- Acciones -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Acciones</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="centered-content">
+                                <!-- añadir -->
+                                <button *ngIf="addAssigendClient && element.new == true" mat-icon-button color="primary" (click)="saveClient(element)">
+                                    <mat-icon>save</mat-icon>
+                                </button>
+								<!-- Eliminar -->
+                                <button mat-icon-button color="warn" (click)="removeClient(element, element.new)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="clientsDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: clientsDisplayedColumns"></tr>
+                </table>
+                <button mat-fab color="primary" class="fab-button" (click)="addClient()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

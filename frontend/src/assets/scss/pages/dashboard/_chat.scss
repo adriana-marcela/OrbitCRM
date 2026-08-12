@@ -1,0 +1,464 @@
+/* Estilos para el contenedor de la ventana de chat */
+.chat-container {
+	height: 100%;
+
+    .messages-container {
+		max-width: 100%;             /* Limita el ancho de cada burbuja */
+		word-break: break-word;      /* Rompe palabras largas si es necesario */
+		overflow-wrap: break-word;   /* Asegura que no se desborde */
+		white-space: pre-wrap;       /* Mantiene saltos de línea pero permite ajuste de línea */
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        background-color: #f5f5f5;
+        height: 37vh; // el largo del chat abierto
+    }
+}
+/* Estilos para el contenedor de la lista de chats */
+.chats-list {
+    .cardWithShadow {
+        height: 70vh; // Largo del contenedor de contactos (El blanco)
+    }
+
+    .mdc-list-item {
+        padding: 10px 15px;
+        border-radius: 20px;
+    }
+
+    /* Estilos para el scrollbar */
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $primary;
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: $primary;
+    }
+}
+//Scroll de los contactos del chat interno
+.scrollable-list {
+	max-height: 300px; //Maximo largo de los contactos
+	overflow-y: auto;
+	padding-right: 10px; /* espacio para evitar que se esconda el scroll */
+  }
+
+  .conte-chat {
+	cursor: pointer;
+  }
+
+  .scrollable-list::-webkit-scrollbar {
+	width: 6px;
+  }
+
+  .scrollable-list::-webkit-scrollbar-thumb {
+	background-color: #27ccff;
+	border-radius: 3px;
+  }
+
+
+/* Estilos para el contenedor de la ventana de chat */
+.chat {
+    height: 70vh;
+    .mat-mdc-card {
+        margin-bottom: 0px;
+        height: fit-content;
+    }
+}
+/* Estilos para el mensaje de no tener chats */
+.no-chats {
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 70vh;
+}
+.no-contact{
+	height: 50vh;
+	text-align: center;
+}
+/* Estilos para el item de la lista de chats */
+mat-list-item {
+    cursor: pointer;
+
+    &.active {
+        background-color: $light-primary;
+    }
+
+    &:hover {
+        background-color: $light-primary;
+    }
+}
+
+/* Estilos para el texto del mensaje */
+.last-message {
+    color: gray;
+    font-size: 0.9em;
+}
+
+/* Estilos para la fecha del mensaje */
+.timestamp {
+    width: 10%;
+    font-size: 0.8em;
+    color: gray;
+    margin-left: auto;
+}
+
+/* Estilos para el contenedor de la ventana de chat */
+.chat-window {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos para el header de la ventana de chat */
+.chat-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos para la foto del usuario */
+.friend-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: left;
+}
+
+/* Estilos para la informaci n del usuario */
+.friend-info {
+    margin-left: 15px;
+
+    h3 {
+        margin: 0;
+    }
+
+    p {
+        margin: 0;
+        color: gray;
+    }
+
+    span {
+        display: inline-block;
+        font-size: 0.8em;
+    }
+
+    span.active {
+        color: green;
+    }
+
+    span.inactive {
+        color: red;
+    }
+}
+
+/* Estilos para el contenedor de los mensajes */
+.message {
+    margin-bottom: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos para el mensaje del usuario */
+.user-message {
+    align-self: flex-end;
+    background-color: #dcf8c6;
+    border-radius: 10px 0 10px 10px;
+    padding: 10px;
+}
+
+/* Estilos para el mensaje del amigo */
+.friend-message {
+    align-self: flex-start;
+    background-color: #fff;
+    border-radius: 0 10px 10px 10px;
+    padding: 10px;
+}
+
+/* Estilos para el contenedor de los mensajes */
+.message-content {
+    position: relative;
+    max-width: 60%;
+    min-width: 6em;
+    margin-bottom: 5px;
+}
+
+/* Estilos para el timestamp de los mensajes */
+.message-timestamp {
+    font-size: 0.7em;
+    color: gray;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Estilos para el contenedor de las acciones de la ventana de chat */
+.chat-actions {
+    background-color: #f5f5f5;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+
+/* Estilos para el contenedor del input de texto */
+.chat-input-container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 25px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+/* Estilos para el bot n de emojis */
+.emoji-button {
+    color: #9a9a9a !important;
+    margin-right: 5px;
+}
+
+/* Estilos para el input de texto */
+.input-chat {
+    flex: 1;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 8px;
+
+    &::placeholder {
+        color: #9a9a9a;
+    }
+}
+
+/* Estilos para el bot n de enviar */
+.send-button {
+    background-color: $primary !important;
+    color: #fff !important;
+}
+
+/* Estilos para el selector de emojis */
+.emoji-picker {
+    position: absolute;
+    bottom: 70px;
+    left: 50px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 18px 18px 18px 0;
+
+    .emoji-mart {
+        display: flex;
+        padding: 20px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+
+        .emoji-mart-anchors {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .emoji-mart-emoji:hover {
+            background-color: #f0f0f0;
+        }
+
+        .emoji-mart-category-label {
+            color: #9a9a9a;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .emoji-mart-category {
+            max-height: 300px;
+            overflow-y: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            /* Estilos para el scrollbar */
+            &::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: $primary;
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background-color: $primary;
+            }
+        }
+
+        .emoji-mart-emoji {
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin: 5px;
+            width: 32px;
+            height: 32px;
+        }
+
+        emoji-search {
+            width: 100%;
+        }
+
+        .emoji-mart-search {
+            width: 100%;
+            margin-bottom: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 18px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            padding: 8px;
+            background-color: transparent;
+
+            input {
+                width: 100%;
+                border: none;
+                outline: none;
+                background-color: transparent;
+                padding-right: 30px;
+
+                &::placeholder {
+                    color: #a0a0a0;
+                }
+            }
+
+            .emoji-mart-search-icon, .emoji-mart-sr-only {
+                display: none;
+            }
+        }
+    }
+}
+
+/* Estilos para el contenedor del chat */
+.conte-chat {
+    height: auto !important;
+    margin: 10px 0px 10px 0px;
+
+    span {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: left;
+        align-items: center;
+    }
+}
+
+/* Estilos para la foto del chat */
+.chat-photo {
+    width: 20%;
+}
+
+/* Estilos para la informaci n principal del chat */
+.chat-main-info {
+    width: 60%;
+}
+
+/* Estilos para el texto del mensaje del chat */
+.mensaje-chat {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+  ///TODAS LAS MEDIA QUERIS
+
+/* Estilos para cuando el ancho de la pantalla es menor a 1280px */
+@media (max-width: 1280px) {
+	//Scroll de los contactos del chat interno
+	.scrollable-list {
+		max-height: 40vh; //para que se adecue el contenido a la pantalla los contactos
+		overflow-y: auto;
+		padding-right: 10px; //espacio para evitar que se esconda el scroll
+	}
+    .chat-window {
+        width: 100%;
+    }
+}
+
+/* Estilos para cuando el ancho de la pantalla es menor a 680px */
+@media (max-width: 680px) {
+	//Scroll de los contactos del chat interno
+	.scrollable-list {
+	max-height: 45vh; //para que se adecue el contenido a la pantalla los contactos
+	overflow-y: auto;
+	padding-right: 10px; //espacio para evitar que se esconda el scroll
+	}
+    .message-content {
+        max-width: 100%;
+    }
+
+    .chat-input-container {
+        padding: 5px;
+    }
+
+    .input-chat {
+        font-size: 13px;
+    }
+
+    .send-button {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Para pantallas grandes */
+@media screen and (min-width: 1440px) {
+	.scrollable-list {
+	flex: 1;
+	max-height: 50vh; // Esto indica cuando el Scroll debe aparecer
+	overflow-y: auto;
+	padding-right: 10px; //espacio para evitar que se esconda el scroll
+  }
+	.chat-container {
+		display: flex;
+	}
+	.chats-list,
+	.chat {
+	  height: 70vh; // altura fija compartida
+	  background-color: #eaf6ff;
+	}
+	.chat {
+	  display: flex;
+	  flex-direction: column;
+
+	  .mat-mdc-card {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	  }
+
+	.cardWithShadow {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.messages-container {
+		flex: 1;
+		overflow-y: auto;
+		padding: 20px;
+		background-color: #f5f5f5;
+	}
+
+	.message-input {
+		background-color: #ffffff;
+		padding: 16px;
+		border-radius: 10px;
+	}
+	.no-chats {
+	  height: 70vh;
+	}
+}
+}

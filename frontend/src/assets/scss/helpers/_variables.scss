@@ -1,0 +1,94 @@
+// Configuraci n de variables para la creaci n de utilidades CSS en
+// el proyecto. Estas variables se utilizan para crear las utilidades
+// CSS que se pueden utilizar en el proyecto.
+
+// Mapa de utilidades CSS que se pueden utilizar en el proyecto. Las
+// utilidades CSS se pueden definir en el archivo de configuraci n de
+// variables y se pueden utilizar en los estilos CSS.
+
+$utilities: (
+    ) !default;
+
+// Espaciado entre elementos. El valor predeterminado es de 16px.
+$spacer: 16px !default;
+// Mapa de espaciados entre elementos.
+$spacers: (
+    0: 0,
+    2: $spacer * 0.125,
+    4: $spacer * 0.25,
+    6: 7px,
+    8: $spacer * 0.5,
+    10: 10px,
+    12: $spacer * 0.75,
+    15: 15px,
+    16: $spacer,
+    20: 20px,
+    24: $spacer * 1.5,
+    30: 30px,
+    32: $spacer * 2,
+    48: $spacer * 3,
+    ) !default;
+
+// Color del borde. El valor predeterminado es #e5eaef.
+$border-color: #e5eaef !default;
+// Mapa de estilos de borde.
+$borders: (
+    0: 0,
+    1: 1px solid $border-color,
+    2: 2px solid $border-color,
+    4: 4px solid $border-color,
+    8: 8px solid $border-color,
+    ) !default;
+
+// Radio base del borde redondeado. El valor predeterminado es de 7px.
+$radius-base: 7px !default;
+// Mapa de radios de borde redondeado.
+$radius: (
+    0: 0,
+    7: $radius-base,
+    8: $radius-base * 2,
+    12: $radius-base * 3,
+    16: $radius-base * 4,
+    full: 9999px,
+    ) !default;
+
+// Mapa de tama os de fuente. Los valores predeterminados son 100, 200, 300, 400, 500, 600, 700, 800, 900.
+$font-wieghts: (
+    100: 100,
+    200: 200,
+    300: 300,
+    400: 400,
+    500: 500,
+    600: 600,
+    700: 700,
+    800: 800,
+    900: 900,
+    ) !default;
+
+// Mapa de tama os de fuente. Los valores predeterminados son 10px, 12px, 14px, 15px, 16px, 18px, 20px, 24px, 30px.
+$font-sizes: (
+    0: 0,
+    10: 10px,
+    12: 12px,
+    14: 14px,
+    15: 15px,
+    16: 16px,
+    18: 18px,
+    20: 20px,
+    24: 24px,
+    30: 30px,
+    ) !default;
+
+// Mapa de tama os de elementos. Los valores predeterminados son 0, 20%, 25%, 40%, 50%, 60%, 75%, 80%, 100%, auto.
+$sizes: (
+    0: 0,
+    20: 20%,
+    25: 25%,
+    40: 40%,
+    50: 50%,
+    60: 60%,
+    75: 75%,
+    80: 80%,
+    full: 100%,
+    auto: auto,
+    ) !default;

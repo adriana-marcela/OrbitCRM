@@ -1,0 +1,146 @@
+<div class="row chat-container">
+
+    <!-- Chat de contactos -->
+    <div class="col-lg-4 chats-list">
+        <mat-card class="cardWithShadow">
+            <mat-card-content class="p-24">
+                <mat-card-title>Contactos</mat-card-title>
+
+                <mat-tab-group>
+                    <mat-tab *ngIf="user.is_staff" label="Clientes">
+                        <ng-container *ngIf="chatService.getClients() | async as clients">
+                            <div *ngIf="clients.length > 0; else noClients">
+								<div class="scrollable-list">
+                                <mat-list>
+                                    <mat-list-item *ngFor="let client of clients" (click)="selectContact(client)" class="conte-chat" [class.active]="selectedContact?.email === client.email">
+                                        <div class="chat-photo">
+                                            <img matListAvatar [src]="client.photo" alt="foto perfil" class="friend-photo">
+                                        </div>
+                                        <div class="chat-main-info">
+                                            <div class="mensaje-chat">{{ client.fullname }}</div>
+                                            <div matLine class="last-message">{{ client.last_message }}</div>
+                                        </div>
+                                        <div class="timestamp">{{ client.last_message_date | date:'shortTime' }}</div>
+                                    </mat-list-item>
+                                </mat-list>
+								</div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noClients>
+                            <div class="no-contact">
+                                <p>Aún no hay clientes abiertos</p>
+                            </div>
+                        </ng-template>
+                    </mat-tab>
+
+                    <mat-tab label="Colaboradores">
+                        <ng-container *ngIf="chatService.getCollaborators() | async as collaborators">
+                            <div *ngIf="collaborators.length > 0; else noCollaborators">
+								<div class="scrollable-list">
+                                <mat-list>
+                                    <mat-list-item *ngFor="let collaborator of collaborators" (click)="selectContact(collaborator)" class="conte-chat" [class.active]="selectedContact?.email === collaborator.email">
+                                        <div class="chat-photo">
+                                            <img matListAvatar [src]="collaborator.photo" alt="foto perfil" class="friend-photo">
+                                        </div>
+                                        <div class="chat-main-info">
+                                            <div class="mensaje-chat">{{ collaborator.fullname }}</div>
+                                            <div matLine class="last-message">{{ collaborator.last_message }}</div>
+                                        </div>
+                                        <div class="timestamp">{{ collaborator.last_message_date | date:'shortTime' }}</div>
+                                    </mat-list-item>
+                                </mat-list>
+								</div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noCollaborators>
+                            <div class="no-contact">
+                                <p>Aún no hay colaboradores abiertos</p>
+                            </div>
+                        </ng-template>
+                    </mat-tab>
+
+                </mat-tab-group>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Chat de mensajes -->
+    <div class="col-lg-8 chat">
+        <mat-card>
+
+            <!-- Mensaje de selección de chat -->
+            <div *ngIf="!selectedContact" class="no-chats">
+                <mat-card-content class="p-24">
+                    <p>Selecciona un chat para comenzar la conversación.😊</p>
+                </mat-card-content>
+            </div>
+
+            <!-- Ventana de chat seleccionada -->
+            <div *ngIf="selectedContact" class="message-input">
+
+                <!-- Encabezado del chat -->
+                <mat-card-header>
+                    <div class="chat-header">
+                        <img [src]="selectedContact.photo || 'assets/img/profile/profile-default.png'" alt="img"
+                            class="friend-photo">
+                        <div class="friend-info">
+                            <h3>{{ selectedContact.fullname }}</h3>
+                            <p>{{ selectedContact.position }}</p>
+                            <!-- <span [ngClass]="selectedContact.isActive ? 'active' : 'inactive'">
+                                {{ selectedContact.isActive ? 'Activo' : 'Inactivo' }}
+                            </span> -->
+                        </div>
+                    </div>
+                </mat-card-header>
+
+                <!-- Contenedor de mensajes -->
+                <mat-card-content class="messages-container" #messagesContainer>
+                    <div *ngFor="let chat of chats" class="message">
+                        <div *ngFor="let message of chat.messages" class="message-content"
+                            [ngClass]="{'user-message': message.sender === user.email, 'friend-message': message.sender !== user.email}">
+                            <span>{{ message.text }}</span>
+                            <span class="message-timestamp">{{ message.date | date:'shortTime' }}</span>
+                        </div>
+                    </div>
+                </mat-card-content>
+
+                <!-- Acciones del chat -->
+                <mat-card-actions class="chat-actions">
+                    <div class="chat-input-container">
+                        <button mat-icon-button class="emoji-button" (click)="toggleEmojiPicker()">
+                            <mat-icon>insert_emoticon</mat-icon>
+                        </button>
+                        <input class="input-chat" placeholder="Escribe un mensaje..." [(ngModel)]="newMessage"
+                            (keyup.enter)="sendMessage()">
+                    </div>
+                    <button mat-icon-button color="primary" class="send-button" (click)="sendMessage()">
+                        <mat-icon>send</mat-icon>
+                    </button>
+                </mat-card-actions>
+
+                <!-- Selector de emojis (si está visible) -->
+                <div *ngIf="showEmojiPicker" class="emoji-picker">
+                    <emoji-mart (emojiSelect)="addEmoji($event)" [set]="'apple'" [emojiSize]="24" [perLine]="8"
+                        [showPreview]="false"
+                        [showSingleCategory]="true"
+                        [i18n]="{
+                            'categories': {
+                                'search': 'Buscar',
+                                'recent': 'Reciente',
+                                'people': 'Personas',
+                                'nature': 'Animales y Naturaleza',
+                                'food': 'Comida',
+                                'activity': 'Actividad',
+                                'travel': 'Viaje',
+                                'objects': 'Objetos',
+                                'symbols': 'Simbolos',
+                                'flags': 'Banderas'
+                            }
+                        }">
+                    </emoji-mart>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+</div>

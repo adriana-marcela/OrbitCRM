@@ -1,0 +1,230 @@
+/**
+ * Estilos para el sidebar
+ * Establece los estilos para el sidebar que se muestra en la
+ * pantalla de autenticación y en la pantalla de inicio.
+ * @see https://material.angular.io/components/sidenav/overview
+ */
+.sidebarNav {
+    flex-shrink: 0;
+    transition: swift-ease-out(width);
+    position: absolute;
+    overflow-x: hidden;
+    top: 0 !important;
+    left: 0;
+    border-right: 0 !important;
+    box-shadow: $box-shadow;
+}
+
+@media (min-width: 1099px) {
+    .sidebarNav {
+        top: $layout-padding !important;
+        left: $layout-padding;
+        height: calc(100% - #{$layout-padding * 2});
+        border-radius: $border-radius !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .contentWrapper {
+        margin-left: calc(72px + #{$layout-padding}) !important;
+    }
+
+    .sidebarNav-mini {
+        .contentWrapper {
+            margin-left: calc(#{$sidenav-mini} + #{$layout-padding}) !important;
+        }
+    }
+}
+
+.sidebar-list {
+    &.mdc-list {
+        .mdc-list-group__subheader {
+            margin-top: 24px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            opacity: 0.5;
+            font-weight: 700;
+            margin-top: 24px;
+            color: $textPrimary;
+            padding: 3px 16px !important;
+        }
+
+        .menu-list-item {
+            border-radius: 0;
+            height: 50px;
+            padding: 8px 26px;
+            margin: 5px 0;
+            margin-bottom: 2px;
+
+            .hide-menu {
+                font-size: 15px;
+            }
+
+            &.primary {
+                &.activeMenu,
+                &.expanded,
+                &:hover {
+                    .mdc-list-item__primary-text,
+                    .mat-mdc-list-item-icon {
+                        color: $primary !important;
+                    }
+                }
+
+                &:before {
+                    background-color: $light-primary;
+                }
+            }
+
+            &:before {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: -16px;
+                right: unset;
+                width: 0;
+                height: 100%;
+                opacity: 1;
+                z-index: -1;
+                border-radius: 0 24px 24px 0;
+                transition: all 0.4s ease-in-out;
+            }
+
+            &.expanded:before,
+            &.activeMenu:before {
+                content: "";
+                width: 100%;
+            }
+
+            &.activeMenu {
+                &:before {
+                    width: $sidenav-desktop;
+                }
+
+                background-color: transparent !important;
+            }
+
+            &:hover {
+                &:before {
+                    content: "";
+                    width: 100%;
+                }
+
+                .mdc-list-item__primary-text {
+                    color: $textPrimary !important;
+                }
+
+                .mat-mdc-list-item-icon {
+                    color: $textPrimary !important;
+                }
+            }
+
+            &:before,
+            &:focus {
+                z-index: -1;
+            }
+
+            .mdc-list-item__start {
+                margin-right: 14px;
+                margin-left: 0 !important;
+                width: 20px;
+                height: 20px;
+                fill: transparent !important;
+                color: $textPrimary;
+            }
+
+            .mdc-list-item__primary-text {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+    }
+}
+
+.flex-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.side-img {
+    margin-top: -60px;
+}
+
+.branding {
+    display: flex;
+    align-items: center;
+    padding: 0.75em;
+    text-decoration: none;
+    white-space: nowrap;
+    color: inherit;
+    border-radius: 50rem;
+
+    .branding-logo {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .branding-name {
+        margin: 0 13px;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+}
+
+.sidenav-container {
+    width: 72px;
+    transition: width 0.3s ease;
+    white-space: nowrap;
+    overflow-x: hidden !important;
+
+    .sidebar-list.mdc-list .menu-list-item .mdc-list-item__start {
+        margin-right: 26px !important;
+    }
+
+    &:hover {
+        width: $sidenav-desktop !important;
+    }
+
+    .sidebar-list {
+        list-style-type: none;
+        padding: 0;
+
+        .mat-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            transition: padding 0.3s ease;
+
+            .sidenav-container:hover & {
+                justify-content: flex-start;
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+        }
+
+        .mat-list-item-content {
+            display: none;
+
+            .sidenav-container:hover & {
+                display: block;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .sidenav-container {
+        width: $sidenav-desktop;
+    }
+}

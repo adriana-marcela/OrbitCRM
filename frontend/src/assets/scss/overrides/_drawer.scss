@@ -1,0 +1,14 @@
+// Establece el color de fondo del contenedor del menu lateral
+// y del contenedor del contenido principal.
+// El color de fondo del contenedor del menu lateral es el mismo
+// que el color de fondo del toolbar, establecido en la variable
+// $sidebarbg. El color de fondo del contenedor del contenido
+// principal es el mismo que el color de fondo de la tarjeta,
+// establecido en la variable $background.
+.mat-drawer {
+    background-color: $sidebarbg;
+}
+
+.mat-drawer-container {
+    background-color: $background;
+}

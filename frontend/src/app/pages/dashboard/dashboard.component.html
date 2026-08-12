@@ -1,0 +1,22 @@
+<!-- Contenedor principal -->
+<mat-sidenav-container class="mainWrapper blue_theme light-theme" autosize autoFocus dir="ltr">
+    <!-- Contenedor del menú lateral -->
+    <mat-sidenav #leftsidenav [mode]="isOver ? 'over' : 'side'" [opened]="!isOver" (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav">
+        
+        <!-- Componente del menú lateral -->
+        <app-sidebar (closeSidenav)="onCloseSidenav()"></app-sidebar>
+    </mat-sidenav>
+
+    <!-- Contenedor del contenido principal -->
+    <mat-sidenav-content class="contentWrapper p-l-24 p-r-24">
+        <main class="pageWrapper maxWidth">
+            <!-- Barra de navegación -->
+            <app-header [showToggle]="!isOver" (toggleCollapsed)="toggleCollapsed()" (toggleMobileNav)="sidenav.toggle()"></app-header>
+
+            <!-- Contenido principal -->
+            <div class="m-t-30">
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>

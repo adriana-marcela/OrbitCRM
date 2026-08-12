@@ -1,0 +1,27 @@
+/**
+ * Genera estilos CSS para que los iconos tengan
+ * un tamaño din mico en función de la clase
+ * que se le asigne.
+ *
+ * Por ejemplo, si se asigna la clase
+ * "icon-24" a un icono, este tendr  un
+ * ancho y alto de 24px.
+ *
+ * @see https://sass-lang.com/documentation/values/lists
+ * @see https://sass-lang.com/documentation/at-rules/include
+ */
+
+@use "sass:meta";
+
+$columns: 48;
+
+@mixin icon_size {
+    @for $i from 1 through $columns {
+        .icon-#{$i} {
+            height: #{$i}px !important;
+            width: #{$i}px !important;
+        }
+    }
+}
+
+@include icon_size;

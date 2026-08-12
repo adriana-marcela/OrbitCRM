@@ -1,0 +1,61 @@
+/**
+ * Este archivo se encarga de generar las utilidades de CSS
+ * Se encarga de generar las utilidades de CSS para los componentes de
+ * Angular Material. Las utilidades son las clases que se pueden
+ * utilizar en los componentes para darles un estilo determinado.
+ * Las utilidades se generan en base a los valores definidos en el
+ * archivo variables.scss y se guardan en una variable llamada
+ * $utilities. Luego se itera sobre esta variable y se generan las
+ * clases CSS correspondientes.
+ * Las utilidades se pueden agrupar en categorías como display, flexbox,
+ * spacing, border, etc. Cada categoría tiene su propia variable
+ * $utilities que se utiliza para generar las clases CSS.
+ */
+@use "sass:map";
+@use "sass:meta";
+@use "sass:list";
+@use "variables";
+
+@use "functions";
+@use "flexbox";
+@use "display";
+@use "border";
+@use "text";
+@use "spacing";
+@use "rounded";
+
+$utilities: functions.map-collect(variables.$utilities,
+        display.$utilities,
+        flexbox.$utilities,
+        spacing.$utilities,
+        border.$utilities,
+        rounded.$utilities,
+        text.$utilities);
+
+@each $key, $utility in $utilities {
+    $values: map.get($utility, values);
+
+    // Si los valores son una lista o un string, convertirlo en un mapa
+    @if meta.type-of($values)=="string" or meta.type-of(list.nth($values, 1)) !="list"
+
+        {
+        $values: list.zip($values, $values);
+    }
+
+    $properties: map.get($utility, property);
+    $property-class-prefix: map.get($utility, class);
+
+    // La clase de utilidad puede estar vacía, (por ejemplo, con la clase de posición)
+    $property-class-prefix-hyphen: if($property-class-prefix =="",
+            $property-class-prefix,
+            $property-class-prefix + "-"
+        );
+
+    @each $class-modifier, $value in $values {
+        .#{$property-class-prefix-hyphen + $class-modifier} {
+            @each $property in $properties {
+                #{$property}: $value !important;
+            }
+        }
+    }
+}

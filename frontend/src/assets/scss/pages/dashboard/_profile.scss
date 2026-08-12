@@ -1,0 +1,21 @@
+.profile {
+    align-items: center;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: row;
+}
+
+.profile-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-top: 10px;
+    border-radius: 50%;
+}
+
+.profile-content {
+    display: flex;
+    width: 100%;
+}

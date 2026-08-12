@@ -1,0 +1,21 @@
+// Establece que los elementos con la clase d-lg-flex se muestren
+// como flexbox en pantallas con un ancho mayor a 1200px
+@media (min-width: 1200px) {
+    body {
+        .d-lg-flex {
+            display: flex !important;
+        }
+
+        // Establece que los elementos con la clase align-items-lg-center
+        // se alineen verticalmente en pantallas con un ancho mayor a 1200px
+        .align-items-lg-center {
+            align-items: center !important;
+        }
+    }
+}
+
+// Establece el valor de flexbox para que el elemento ocupe todo el espacio
+// disponible en la horizontal
+.flex-1-auto {
+    flex: 1 1 0%;
+}

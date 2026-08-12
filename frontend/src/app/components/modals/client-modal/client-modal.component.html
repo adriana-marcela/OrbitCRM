@@ -1,0 +1,957 @@
+<div class="close-button-container">
+    <button mat-icon-button mat-dialog-close aria-label="Cerrar" class="floating-close-button">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<div mat-dialog-content class="mat-mdc-card-content p-32">
+	<!-- Aqui empieza las pestañas general hasta accesos -->
+    <mat-tab-group [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="onTabChange($event)">
+
+		<!-- Pestaña para información general -->
+        <mat-tab label="General">
+
+            <!-- Formulario para agregar información general -->
+            <form [formGroup]="clientForm" style="margin-top: 25px;" class="collaborator-info-modal">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="collaborator-header">
+
+                            <!-- Zona para subir un Logo -->
+                            <div class="upload-container">
+								<!-- Hint para la recomendacion del formato de la imagen -->
+                                <span class="upload-hint" *ngIf="!imagePreview"><p><em>Recomendación para el Logo: formato cuadrado 1:1</em></p></span>
+                                <ngx-dropzone *ngIf="!imagePreview" (change)="onFileDropped($event)"
+                                    class="custom-dropzone" [multiple]="false">
+                                    <ngx-dropzone-label>
+                                        <div class="dropzone-content">
+                                            <mat-icon class="upload-icon">cloud_upload</mat-icon>
+                                        </div>
+                                    </ngx-dropzone-label>
+                                </ngx-dropzone>
+
+                                <!-- Logo subido -->
+                                <div *ngIf="imagePreview" class="uploaded-image">
+                                    <img [src]="imagePreview" alt="Uploaded Image" class="uploaded-preview" />
+
+                                    <!-- Botón para eliminar el Logo -->
+                                    <button mat-button color="warn" (click)="onRemoveFile(files[0])"
+                                        style="margin-top: 5px;">
+                                        Eliminar Logo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo para descripción -->
+                        <div class="collaborator-description agendaForm">
+                            <mat-card-title class="collaborator-name">Información sobre el cliente</mat-card-title>
+                            <mat-form-field appearance="outline" class="w-100" color="primary">
+                                <textarea matInput formControlName="description" maxlength="150"></textarea>
+                            </mat-form-field>
+  						<!-- Título de colaboradores -->
+                        <mat-card-title class="collaborator-name" style="margin-top: -10px;">
+                          Colaboradores asignados
+                        </mat-card-title>
+
+                        <!-- Lista de colaboradores -->
+						<mat-list>
+							<mat-list-item *ngFor="let collaborator of collaborators.slice(0,3)" class="listasig">
+							  {{ collaborator.fullname }}
+							</mat-list-item>
+						  </mat-list>
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+
+                        <div class="row">
+                            <!-- Campo para los nombres -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>person</mat-icon>
+                                    <mat-label>Nombre</mat-label>
+                                    <input matInput formControlName="name" type="text" maxlength="30"
+                                        (input)="validateText($event)" />
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para los apellidos -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>person</mat-icon>
+                                    <mat-label>Apellidos</mat-label>
+                                    <input matInput formControlName="lastname" type="text" maxlength="30"
+                                        (input)="validateText($event)" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Campo para el tipo de documento -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>assignment_ind</mat-icon>
+                                    <mat-label>Tipo de documento</mat-label>
+                                    <mat-select formControlName="documentType">
+                                        <mat-option value="CC">Cédula de ciudadanía</mat-option>
+                                        <mat-option value="CE">Cédula de extranjería</mat-option>
+                                        <mat-option value="P">Pasaporte</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para el número de documento -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>fingerprint</mat-icon>
+                                    <mat-label>Número de documento personal</mat-label>
+                                    <input matInput formControlName="documentNumber" type="number"
+                                        (input)="onInput($event, 12)" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Campo para el correo electrónico -->
+						<div class="row">
+							<div class="col-lg-6">
+                        		<mat-form-field appearance="outline" class="w-100" color="primary">
+                            		<mat-icon matPrefix>email</mat-icon>
+                            		<mat-label>Correo electrónico</mat-label>
+                            		<input matInput formControlName="email" type="email" maxlength="50"/>
+                        		</mat-form-field>
+							</div>
+
+						<!-- Campo para el cumpleaños -->
+						<div class="col-lg-6">
+							<mat-form-field appearance="outline" class="w-100" color="primary">
+	  						<mat-icon matPrefix (click)="picker.open()" class="clickable-icon">calendar_today</mat-icon>
+	  						<mat-label>Fecha de nacimiento (dd/mm/aaaa)</mat-label>
+
+	  						<input matInput [matDatepicker]="picker" formControlName="birthday" readonly/>
+
+	  						<!-- Toggle oculto para habilitar funcionalidad -->
+	  						<mat-datepicker-toggle [for]="picker" style="display: none"></mat-datepicker-toggle>
+	  						<mat-datepicker #picker></mat-datepicker>
+
+	  						<mat-error *ngIf="hasBirthDateError()">
+								{{ getBirthDateErrorMessage() }}
+	  						</mat-error>
+							</mat-form-field>
+  						</div>
+						</div>
+
+                        <!-- Campo para el país -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>public</mat-icon>
+                                    <mat-label>País</mat-label>
+                                    <mat-select formControlName="country">
+                                        <mat-option *ngFor="
+												let country of countries
+											" [value]="country">
+                                            {{ country }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para el departamento -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>place</mat-icon>
+                                    <mat-label>Departamento</mat-label>
+                                    <input matInput formControlName="department" maxlength="30" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Campo para la ciudad -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>location_city</mat-icon>
+                                    <mat-label>Ciudad</mat-label>
+                                    <input matInput formControlName="city" maxlength="30"/>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para la dirección -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>home</mat-icon>
+                                    <mat-label>Dirección</mat-label>
+                                    <input matInput formControlName="address" maxlength="60" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Campo para el teléfono -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>phone</mat-icon>
+                                    <mat-label>Teléfono</mat-label>
+                                    <input matInput formControlName="phone"
+                                        (input)="onInput($event, 15, clientForm.get('phone'), 'phone')" />
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para el rol -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>work</mat-icon>
+                                    <mat-label>Rol</mat-label>
+                                    <mat-select formControlName="rol">
+                                        <mat-option *ngFor="let rol of roles" [value]="rol.id">
+                                            {{ rol.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div *ngIf="clientForm.get('phone')?.invalid && clientForm.get('phone')?.touched" class="invalid-feedback">
+                            <div class="col-lg-6" *ngIf="clientForm.get('phone')?.errors?.['invalidPhone']" class="validacion-tel">
+                                <mat-error>
+                                    Número de teléfono no válido. Asegúrate de que siga el formato: +[código de país][número].
+                                </mat-error>
+                            </div>
+                        </div>
+                        <!-- Botones de acciones -->
+                        <div class="footer-button">
+                            <div *ngIf="clientCreated">
+                                <button *ngIf="data.action == 'update'" mat-flat-button color="warn" type="button"
+                                    (click)="removeClient()" style="margin-right: 10px;">
+                                    <mat-icon>delete</mat-icon> Eliminar cliente
+                                </button>
+                                <button mat-flat-button color="primary" type="button" class="button-responsive"
+                                    (click)="saveGeneralInfo()" [disabled]="!clientForm.valid">
+                                    <mat-icon>save</mat-icon> Guardar cambios
+                                </button>
+                            </div>
+                            <div *ngIf="!clientCreated">
+                                <button *ngIf="!clientCreated" mat-flat-button color="primary" type="button"
+                                    (click)="goToTributaryTab()" [disabled]="!clientForm.valid">
+                                    Siguiente
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-tab>
+
+<!-- Pestaña Tributaria -->
+<mat-tab label="Tributaria" [disabled]="!isTributariaVisible">
+  <form [formGroup]="tributaryForm" class="collaborator-bank-info-modal" style="margin-top: 25px;">
+
+<div class="header-tributaria">
+  <!-- Navegación y título -->
+  <div class="nav-title">
+    <button mat-icon-button (click)="prevTributaria()" [disabled]="currentIndex === 0">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <h5 class="mb-0">Tributaria {{ currentIndex + 1 }}</h5>
+
+    <button mat-icon-button (click)="nextTributaria()" [disabled]="currentIndex === tributarys.length - 1">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <!-- Papelera -->
+  <button
+    mat-icon-button
+    color="warn"
+    *ngIf="tributarys.length > 1 && currentIndex > 0"
+    (click)="removeTributaria(currentIndex)"
+    class="delete-button">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
+
+
+
+    <div formArrayName="tributarys" class="tributarias-carousel-wrapper" >
+      <div class="tributarias-carousel" [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
+        <div class="tributaria-card" *ngFor="let group of tributarys.controls; let i = index" [formGroupName]="i">
+
+
+      				<div class="row">
+        			<div class="col-lg-6">
+          			<mat-form-field appearance="outline" class="w-100" color="primary">
+            			<mat-icon matPrefix>business</mat-icon>
+            			<mat-label>Nombre comercial</mat-label>
+            			<input matInput formControlName="corporate_name" maxlength="40" />
+         			 </mat-form-field>
+        			</div>
+
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>corporate_fare</mat-icon>
+                            <mat-label>Razón social</mat-label>
+                            <input matInput formControlName="company_name" maxlength="40" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>person</mat-icon>
+                            <mat-label>Identificacion tributaria</mat-label>
+                            <mat-select formControlName="tributary_id">
+								<mat-option value="N/A">No aplica</mat-option>
+                                <mat-option value="NIT - Colombia">NIT - Colombia</mat-option>
+                                <mat-option value="NIUP - Colombia">NIUP - Colombia</mat-option>
+                                <mat-option value="NIF - España">NIF - España</mat-option>
+                                <mat-option value="CIF - España">CIF - España</mat-option>
+                                <mat-option value="TIN - Estados Unidos">TIN - Estados Unidos</mat-option>
+                                <mat-option value="SSN - Estados Unidos">SSN - Estados Unidos</mat-option>
+                                <mat-option value="EIN - Estados Unidos">EIN - Estados Unidos</mat-option>
+                                <mat-option value="RFC - México">RFC - México</mat-option>
+                                <mat-option value="RNC - República Dominicana">RNC - República Dominicana</mat-option>
+                                <mat-option value="NITE - Costa Rica">NITE - Costa Rica</mat-option>
+                                <mat-option value="RUC - Nicaragua">RUC - Nicaragua</mat-option>
+                                <mat-option value="RUC - Panamá">RUC - Panamá</mat-option>
+                                <mat-option value="RIF - Venezuela">RIF - Venezuela</mat-option>
+                                <mat-option value="RUC - Ecuador">RUC - Ecuador</mat-option>
+                                <mat-option value="RUC - Perú">RUC - Perú</mat-option>
+                                <mat-option value="CPF - Brasil">CPF - Brasil</mat-option>
+                                <mat-option value="CNPJ - Brasil">CNPJ - Brasil</mat-option>
+                                <mat-option value="CUIT - Argentina">CUIT - Argentina</mat-option>
+                                <mat-option value="RUT - Chile">RUT - Chile</mat-option>
+                                <mat-option value="RUT - Uruguay">RUT - Uruguay</mat-option>
+                                <mat-option value="TFN - Australia">TFN - Australia</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>numbers</mat-icon>
+                            <mat-label>Numero tributario</mat-label>
+                            <input matInput formControlName="tributary_number" type="number" (input)="onInput($event, 15)"/>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>person</mat-icon>
+                            <mat-label>Tipo de contribuyente</mat-label>
+                            <mat-select formControlName="taxpayer_type">
+								<mat-option value="N/A">No aplica</mat-option>
+                                <mat-option value="Juridico">Persona jurídica</mat-option>
+                                <mat-option value="Natural">Persona natural</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>gavel</mat-icon>
+                            <mat-label>Responsabilidad tributaria</mat-label>
+                            <mat-select formControlName="tax_liability">
+								<mat-option value="N/A">No aplica</mat-option>
+								<mat-option value="INC">Retención en la fuente a título renta</mat-option>
+                                <mat-option value="IVA">IVA - Impuesto sobre las ventas</mat-option>
+                                <mat-option value="IVA-INC">IVA</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>badge</mat-icon>
+                            <mat-label>Tipo de identificación tributaria</mat-label>
+                            <mat-select formControlName="tax_id_type">
+								<mat-option value="06">No aplica</mat-option>
+                                <mat-option value="01">Gran contribuyente</mat-option>
+                                <mat-option value="02">Autorretenedor</mat-option>
+                                <mat-option value="03">Agente de retención en el impueso sobre las ventas</mat-option>
+                                <mat-option value="04">Regimen simple de tributación</mat-option>
+                                <mat-option value="05">R-99-PN</mat-option>
+								<mat-option value="06">Otros</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>account_balance</mat-icon>
+                            <mat-label>Tipo de regimen</mat-label>
+                            <mat-select formControlName="regime_type">
+								<mat-option value="N/A">No aplica</mat-option>
+                                <mat-option value="IVA">Responsable de IVA</mat-option>
+                                <mat-option value="No IVA">Responsable NO IVA</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+
+<!-- Zona para subir RUT -->
+<div class="col-lg-6 mb-3">
+  <div class="custom-upload-box">
+    <ngx-dropzone *ngIf="HayFile() == ''" (change)="onRutDropped($event)" class="custom-dropzone-small" id="container_box" [multiple]="false" accept=".pdf,.jpg,.jpeg,.png">
+      <ngx-dropzone-label>
+        <div class="dropzone-content">
+          <mat-icon class="upload-icon">cloud_upload</mat-icon>
+		  <br>
+          <span>Subir RUT</span>
+        </div>
+      </ngx-dropzone-label>
+    </ngx-dropzone>
+
+    <!-- RUT subido -->
+<div *ngIf="ViewFile()" class="uploaded-file">
+  <p>{{ rut?.name  || getFileName(HayFile())}}</p>
+  <button *ngIf="HasFile()" mat-button color="primary" (click)="onDownload('rut')">Visualizar RUT</button>
+  <button mat-button color="warn" (click)="onRemoveArch('rut')">Eliminar RUT</button>
+</div>
+
+
+  </div>
+</div>
+
+<!-- Zona para subir Cámara de Comercio -->
+<div class="col-lg-6 mb-3">
+  <div class="custom-upload-box">
+    <ngx-dropzone *ngIf="HayFile('c_commerce') == ''" (change)="onCommerceDropped($event)" class="custom-dropzone-small" id="container_box" [multiple]="false" accept=".pdf,.jpg,.jpeg,.png">
+      <ngx-dropzone-label>
+        <div class="dropzone-content">
+          <mat-icon class="upload-icon">cloud_upload</mat-icon>
+		  <br>
+          <span>Subir Cámara de Comercio</span>
+        </div>
+      </ngx-dropzone-label>
+    </ngx-dropzone>
+
+    <!-- Cámara de Comercio subida -->
+    <div *ngIf="ViewFile('c_commerce')" class="uploaded-file">
+      <p>{{ c_commerce?.name || getFileName(HayFile('c_commerce')) }}</p>
+	  <button  *ngIf="HasFile('c_commerce')" mat-button color="primary" (click)="onDownload('c_commerce')">Visualizar Camara de Comercio</button>
+      <button mat-button color="warn" (click)="onRemoveArch('c_commerce')">Eliminar Cámara de Comercio</button>
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+      </div>
+    </div>
+  </div>
+
+				<!-- Boton para crear una nueva tributaria -->
+				<div class="d-flex justify-content-end gap-2 mt-4">
+    			<button mat-stroked-button color="primary" type="button" (click)="addOtraTributaria()">
+      			<mat-icon>add</mat-icon> Agregar otra tributaria
+    			</button>
+
+				<!-- Boton para guardar cambios -->
+
+                    <button mat-flat-button color="primary" type="button" (click)="saveGeneralInfo('tributario')"
+                        [disabled]="!tributaryForm.valid">
+                        <mat-icon>save</mat-icon> Guardar cambios
+                    </button>
+
+				</div>
+            </form>
+        </mat-tab>
+
+		<!-- Pestaña Servicios -->
+        <mat-tab label="Servicios" [disabled]="!isShow">
+            <div class="table-section table-responsive">
+                <table mat-table [dataSource]="dataSourceServices" class="mat-elevation-z8">
+
+                    <!-- Nombre del servicio -->
+                    <ng-container matColumnDef="service">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Nombre</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content customCollumMedium">
+                            <mat-form-field *ngIf="editingRowsService.has(element)" class="w-100" color="primary">
+                                <mat-select [(ngModel)]="element.service" [placeholder]="getPlaceholderText(element)"
+                                    [disabled]="!element.isNew && editingRowsService.has(element)">
+                                    <mat-option *ngFor="let tipos of serviceSType" [value]="tipos.id">{{tipos.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <span *ngIf="!editingRowsService.has(element)">{{ element.name }}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Fecha de Instalación -->
+                    <ng-container matColumnDef="startDate">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Fecha inicio / Fecha fin</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content customCollumMedium">
+                            <mat-form-field *ngIf="editingRowsService.has(element)" class="w-100" color="primary">
+                                <input matInput [(ngModel)]="element.startDate" [matDatepicker]="picker1"
+                                    placeholder="Seleccionar fecha" required #startDateInput="ngModel"
+                                    [disabled]="!element.isNew && editingRowsService.has(element)" />
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error *ngIf="startDateInput.errors?.['required']">Este campo es
+                                    obligatorio</mat-error>
+                            </mat-form-field>
+                            <div *ngIf="!editingRowsService.has(element)">
+                                <span>{{ element.startDate }}</span>
+                                <mat-icon style="padding-top: 7px;">arrow_right</mat-icon>
+                                <span>{{ element.expirationDate }}</span>
+                            </div>
+                        </td>
+                    </ng-container>
+
+					<!-- Moneda -->
+					<ng-container matColumnDef="currency">
+    					<th mat-header-cell *matHeaderCellDef class="centered-header">Moneda</th>
+    					<td mat-cell *matCellDef="let element" class="centered-content">
+						<mat-form-field *ngIf="editingRowsService.has(element)" class="w-100" appearance="fill" class="size-input">
+    						<mat-select [(ngModel)]="element.currency" placeholder="$">
+        						<mat-option value="COP">COP</mat-option>
+        						<mat-option value="USD">USD</mat-option>
+        						<mat-option value="EUR">EUR</mat-option>
+    						</mat-select>
+						</mat-form-field>
+						<span *ngIf="!editingRowsService.has(element)">{{ element.currency }}</span>
+					</td>
+				</ng-container>
+                    <!-- Precio -->
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Precio</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content customCollumSmall">
+                            <mat-form-field *ngIf="editingRowsService.has(element)" class="w-100" color="primary">
+                                <input matInput type="number" [(ngModel)]="element.price" placeholder="Precio" required
+                                    #priceInput="ngModel" />
+                                <mat-error *ngIf="priceInput.errors?.['required']">Este campo es obligatorio</mat-error>
+                            </mat-form-field>
+                            <span *ngIf="!editingRowsService.has(element)">$ {{ element.price | number:'1.0-0'}}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Es recurrente -->
+                    <ng-container matColumnDef="is_recurrent">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Período</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content recurrency">
+                            <mat-slide-toggle *ngIf="editingRowsService.has(element)" class="custom-toggle"
+                                [(ngModel)]="element.is_recurrent" color="primary"
+                                [disabled]="!element.isNew && editingRowsService.has(element)">
+                                {{ element.is_recurrent ? 'Sí' : 'No' }}
+                            </mat-slide-toggle>
+
+                            <!-- Mostrar tipo de recurrencia solo si es recurrente -->
+                            <mat-form-field *ngIf="editingRowsService.has(element) && element.is_recurrent">
+                                <mat-select [(ngModel)]="element.recurrence" placeholder="Tipo"
+                                    [disabled]="!element.isNew && editingRowsService.has(element)">
+                                    <mat-option [value]="'Mensual'">Mensual</mat-option>
+                                    <mat-option [value]="'Anual'">Anual</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field
+                                *ngIf="editingRowsService.has(element) && element.is_recurrent && element.recurrence">
+                                <mat-select [(ngModel)]="element.Nrecurrency" placeholder="Ciclo"
+                                    [disabled]="!element.isNew && editingRowsService.has(element)">
+                                    <mat-option *ngFor="let recu of recurrency" value="{{recu}}">{{recu}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <span *ngIf="!editingRowsService.has(element)">{{ element.is_recurrent ? element.recurrence
+                                : "No" }}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Pago -->
+                    <ng-container matColumnDef="is_payed">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Pagado</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content">
+                            <mat-slide-toggle *ngIf="editingRowsService.has(element)" class="custom-toggle"
+                                [(ngModel)]="element.is_payed" color="primary">
+                                {{ element.is_payed ? 'Si' : 'No' }}
+                            </mat-slide-toggle>
+                            <span *ngIf="!editingRowsService.has(element)"> {{ element.is_payed ? 'Si' : 'No'
+                                }} </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Acciones -->
+                    <ng-container *ngIf="user?.rol === 'Super Admin'" matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Acciones</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="centered-content">
+
+
+                                <!-- Botón Editar -->
+                                <button *ngIf="!editingRowsService.has(element)" mat-icon-button color="primary"
+                                    (click)="editRow(element,'service')">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+
+                                <!-- Botón Guardar -->
+                                <button *ngIf="editingRowsService.has(element)&&  isUpdating" mat-icon-button
+                                    color="primary" (click)="updateService(element, 'service')"
+                                    [disabled]="!isRowCompleteService(element)">
+                                    <mat-icon>save</mat-icon>
+                                </button>
+
+								<!-- Eliminar -->
+                                <button mat-icon-button color="warn" (click)="removeService(element, 'service')">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+
+                                <button *ngIf="editingRowsService.has(element) &&  !isUpdating " mat-icon-button
+                                    color="primary" (click)="saveService(element,'service')"
+                                    [disabled]="!isRowCompleteService(element)">
+                                    <mat-icon>save</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="servicesdisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: servicesdisplayedColumns"></tr>
+                </table>
+            </div>
+            <br>
+            <!-- Boton de añadir celda -->
+            <div *ngIf="user?.rol === 'Super Admin'" class="footer-button">
+                <button mat-flat-button color="primary" type="button" (click)="addComponent('service')">
+                    <mat-icon>add</mat-icon> Añadir celda
+                </button>
+            </div>
+        </mat-tab>
+
+	   <!-- Pestaña Todo Wordpress -->
+        <mat-tab label="Todo Wordpress" [disabled]="!isShow">
+            <div class="table-section table-responsive">
+				<div *ngIf="isLoading" class="loading-container">
+					<mat-spinner></mat-spinner>
+				  </div>
+				<div *ngIf="!isLoading">
+				<!-- Tabla Wordpress -->
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <!-- Tipo -->
+                    <ng-container matColumnDef="service">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Tipo</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content customCollumMedium">
+
+
+							<mat-form-field *ngIf="editingRows.has(element)" class="w-100" color="primary">
+								<mat-select [(ngModel)]="element.service"
+											[placeholder]="getPlaceholderText(element)"
+											[disabled]="!element.isNew && editingRows.has(element)">
+								  <ng-container *ngFor="let group of groupedServiceTypes">
+									<mat-optgroup [label]="group.category">
+									  <mat-option *ngFor="let item of group.options" [value]="item.id">
+										{{ item.name }}
+									  </mat-option>
+									</mat-optgroup>
+								  </ng-container>
+								</mat-select>
+							  </mat-form-field>
+
+
+                            <span *ngIf="!editingRows.has(element )">{{ element.name }}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Fecha de Instalación -->
+                    <ng-container matColumnDef="startDate">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Fecha inicio / Fecha fin</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content customCollumMedium">
+                            <mat-form-field *ngIf="editingRows.has(element)" class="w-100" color="primary">
+                                <input matInput [(ngModel)]="element.startDate" [matDatepicker]="picker1"
+                                    placeholder="Seleccionar fecha" required #startDateInput="ngModel"
+                                    [disabled]="!element.isNew && editingRows.has(element)" />
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error *ngIf="startDateInput.errors?.['required']">Este campo es
+                                    obligatorio</mat-error>
+                            </mat-form-field>
+                            <div *ngIf="!editingRows.has(element)">
+                                <span>{{ element.startDate }}</span>
+                                <mat-icon style="padding-top: 7px;">arrow_right</mat-icon>
+                                <span>{{ element.expirationDate }}</span>
+                            </div>
+                        </td>
+                    </ng-container>
+
+					<!-- Moneda -->
+					<ng-container matColumnDef="currency">
+    					<th mat-header-cell *matHeaderCellDef class="centered-header">Moneda</th>
+    					<td mat-cell *matCellDef="let element" class="centered-content">
+        					<mat-form-field *ngIf="editingRows.has(element)" class="w-100" appearance="fill" class="size-input">
+            				<mat-select [(ngModel)]="element.currency" placeholder="$">
+								<mat-option value="COP">COP</mat-option>
+								<mat-option value="USD">USD</mat-option>
+								<mat-option value="EUR">EUR</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<span *ngIf="!editingRows.has(element)">{{ element.currency }}</span>
+					</td>
+				</ng-container>
+				<mat-option value="COP">COP</mat-option>
+
+
+                    <!-- Precio -->
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Precio (COP)</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content customCollumMedium">
+                            <mat-form-field *ngIf="editingRows.has(element)" class="w-100" color="primary">
+                                <input matInput type="number" [(ngModel)]="element.price" placeholder="Precio" required
+                                    #priceInput="ngModel" />
+                                <mat-error *ngIf="priceInput.errors?.['required']">Este campo es obligatorio</mat-error>
+                            </mat-form-field>
+                            <span *ngIf="!editingRows.has(element)">$ {{ element.price | number:'1.0-0' }}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Es recurrente -->
+                    <ng-container matColumnDef="is_recurrent">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Período</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content recurrency">
+                            <mat-slide-toggle *ngIf="editingRows.has(element)" class="custom-toggle"
+                                [(ngModel)]="element.is_recurrent" color="primary"
+                                [disabled]="!element.isNew && editingRows.has(element)">
+                                {{ element.is_recurrent ? 'Sí' : 'No' }}
+                            </mat-slide-toggle>
+
+                            <!-- Mostrar tipo de recurrencia solo si es recurrente -->
+                            <mat-form-field *ngIf="editingRows.has(element) && element.is_recurrent" class="w-100">
+                                <mat-select [(ngModel)]="element.recurrence" placeholder="Tipo"
+                                    [disabled]="!element.isNew && editingRows.has(element)">
+                                    <mat-option [value]="'Mensual'">Mensual</mat-option>
+                                    <mat-option [value]="'Anual'">Anual</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field *ngIf="editingRows.has(element) && element.recurrence">
+                                <mat-select [(ngModel)]="element.Nrecurrency" placeholder="Ciclo"
+                                    [disabled]="!element.isNew && editingRows.has(element)">
+                                    <mat-option *ngFor="let recu of recurrency" value="{{recu}}">{{recu}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <span *ngIf="!editingRows.has(element)">{{ element.is_recurrent ? element.recurrence : "No"
+                                }}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Pago -->
+                    <ng-container matColumnDef="is_payed">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Pagado</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content">
+                            <mat-slide-toggle *ngIf="editingRows.has(element)" class="custom-toggle"
+                                [(ngModel)]="element.is_payed" color="primary">
+                                {{ element.is_payed ? 'Si' : 'No' }}
+                            </mat-slide-toggle>
+                            <span *ngIf="!editingRows.has(element)"> {{ element.is_payed ? 'Si' : 'No' }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Acciones -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Acciones</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="centered-content">
+
+
+                                <!-- Botón Editar -->
+                                <button *ngIf="!editingRows.has(element)" mat-icon-button color="primary"
+                                    (click)="editRow(element ,'default')">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+
+                                <!-- Botón Guardar -->
+                                <button *ngIf="editingRows.has(element)&&  isUpdating" mat-icon-button color="primary"
+                                    (click)="updateService(element, 'default')"
+                                    [disabled]="!isRowCompleteService(element)">
+                                    <mat-icon>save</mat-icon>
+                                </button>
+
+								<!-- Eliminar -->
+                                <button mat-icon-button color="warn" (click)="removeService(element, 'default')">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+
+                                <button *ngIf="editingRows.has(element) &&  !isUpdating " mat-icon-button
+                                    color="primary" (click)="saveService(element,'default')"
+                                    [disabled]="!isRowCompleteService(element)">
+                                    <mat-icon>save</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="componentsDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: componentsDisplayedColumns"></tr>
+                </table>
+			</div>
+            </div>
+            <br>
+            <!-- Boton de añadir celda -->
+            <div *ngIf="user?.rol === 'Super Admin'" class="footer-button">
+                <button mat-flat-button color="primary" type="button" (click)="addComponent('default')">
+                    <mat-icon>add</mat-icon> Añadir celda
+                </button>
+            </div>
+        </mat-tab>
+
+       <!-- Pestaña Accesos -->
+        <mat-tab label="Accesos" [disabled]="!isShow">
+            <div class="table-section table-responsive">
+                <table mat-table [dataSource]="dataSourceAccess" class="mat-elevation-z8">
+                    <!-- Tipo -->
+                    <ng-container matColumnDef="type">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Tipo</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content">
+                            <!-- Modo edición -->
+                            <ng-container *ngIf="editingRowsAccess.has(element); else viewMode">
+                                <mat-form-field class="w-100" color="primary">
+                                    <mat-select [(ngModel)]="element.type" placeholder="Selecciona el tipo">
+                                        <mat-option *ngFor="let tipo of typeOptions" [value]="tipo.value">
+                                            {{ tipo.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </ng-container>
+                            <!-- Modo visualización -->
+                            <ng-template #viewMode>
+                                {{ getTypeViewValue(element.type) }}
+                            </ng-template>
+                        </td>
+                    </ng-container>
+                    <!-- name -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Nombre</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content">
+                            <!-- Campo de texto cuando la fila está en modo edición -->
+                            <mat-form-field *ngIf="editingRowsAccess.has(element)" class="w-100" color="primary">
+                                <input matInput [(ngModel)]="element.name" placeholder="Nombre del acceso" required
+                                    #nameInput="ngModel" />
+                                <mat-error *ngIf="nameInput.invalid && nameInput.touched">
+                                    Este campo es obligatorio.
+                                </mat-error>
+                            </mat-form-field>
+                            <!-- Texto estático cuando no está en modo edición -->
+                            <span *ngIf="!editingRowsAccess.has(element)">{{ element.name }}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- User -->
+                    <ng-container matColumnDef="user">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Usuario</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content">
+                            <!-- Campo de texto cuando la fila está en modo edición -->
+                            <mat-form-field *ngIf="editingRowsAccess.has(element)" class="w-100" color="primary" class="size-input">
+                                <input matInput [(ngModel)]="element.user" placeholder="Ingrese el usuario" required
+                                    #userInput="ngModel" autocomplete="off" />
+                                <mat-error *ngIf="userInput.invalid && userInput.touched">
+                                    Este campo es obligatorio.
+                                </mat-error>
+                            </mat-form-field>
+                            <!-- Texto estático cuando no está en modo edición -->
+                            <span *ngIf="!editingRowsAccess.has(element)">{{ element.user }}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Password -->
+                    <ng-container matColumnDef="password">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Contraseña</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content">
+                            <!-- Campo de texto cuando la fila está en modo edición -->
+                            <mat-form-field *ngIf="editingRowsAccess.has(element)" class="w-100" color="primary">
+                                <input matInput [type]="element.showPassword ? 'text' : 'password'"
+                                    [(ngModel)]="element.password" placeholder="Ingrese la contraseña" required
+                                    #passwordInput="ngModel" autocomplete="new-password" />
+                                <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">
+                                    Este campo es obligatorio.
+                                </mat-error>
+
+                                <button mat-icon-button matSuffix (click)="element.showPassword = !element.showPassword"
+                                    [attr.aria-label]="'toggle password visibility'">
+                                    <mat-icon>{{ element.showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            <!-- Texto estático cuando no está en modo edición -->
+                            <span *ngIf="!editingRowsAccess.has(element)">*****
+                                <!-- Texto estático con icono de seguridad cuando no está en modo edición -->
+                                <mat-icon color="primary" class="inline-icon">lock</mat-icon>
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- URL -->
+                    <ng-container matColumnDef="url">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">URL</th>
+                        <td mat-cell *matCellDef="let element" class="centered-content">
+                            <!-- Campo de texto cuando la fila está en modo edición -->
+                            <mat-form-field *ngIf="editingRowsAccess.has(element)" class="w-100" color="primary" class="size-input">
+                                <input matInput [(ngModel)]="element.url" placeholder="Ingrese la URL" required
+                                    #urlInput="ngModel" />
+                                <mat-error *ngIf="urlInput.invalid && urlInput.touched">
+                                    Este campo es obligatorio.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <!-- Botón con enlace cuando no está en modo edición -->
+                            <a *ngIf="!editingRowsAccess.has(element)" [href]="formatUrl(element.url)" target="_blank"
+                                rel="noopener noreferrer">
+                                <button mat-raised-button>
+                                    <mat-icon>link</mat-icon>
+                                    Ingresar
+                                </button>
+                            </a>
+                        </td>
+                    </ng-container>
+
+                    <!-- Acciones -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef class="centered-header">Acciones</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="centered-content">
+
+                                <!-- Botón Editar -->
+                                <button *ngIf="!editingRowsAccess.has(element)" mat-icon-button color="primary"
+                                    (click)="editRowAccess(element)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+
+                                <!-- Botón Guardar -->
+                                <button *ngIf="editingRowsAccess.has(element) && isUpdating" mat-icon-button
+                                    color="primary" (click)="updateAccess(element)"
+                                    [disabled]="!isRowCompleteAccess(element)">
+                                    <mat-icon>save</mat-icon>
+                                </button>
+
+								<!-- Eliminar -->
+                                <button mat-icon-button color="warn" (click)="removeAccess(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+
+                                <button *ngIf="editingRowsAccess.has(element) && !isUpdating" mat-icon-button
+                                    color="primary" (click)="saveAccess(element)"
+                                    [disabled]="!isRowCompleteAccess(element)">
+                                    <mat-icon>save</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="accesosDisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: accesosDisplayedColumns"></tr>
+                </table>
+            </div>
+            <br>
+            <!-- Boton de añadir celda -->
+            <div class="footer-button">
+                <button mat-flat-button color="primary" type="button" (click)="addAccess()">
+                    <mat-icon>add</mat-icon> Añadir celda
+                </button>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

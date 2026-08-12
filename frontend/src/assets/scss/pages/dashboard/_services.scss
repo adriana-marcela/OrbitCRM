@@ -1,0 +1,180 @@
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+
+    .custom-dropzone {
+        border: 0;
+        background-color: #eaf4ff;
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        width: 150px; // Ajusta el tamaño a tu preferencia
+        height: 120px;
+        position: relative;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background-color: #d6ebff;
+            border-color: #0056b3;
+        }
+
+        .dropzone-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .upload-icon {
+            color: #007bff;
+        }
+
+        .upload-text {
+            margin-top: 10px;
+            color: #007bff;
+        }
+    }
+
+    .upload-hint {
+        margin-top: 10px;
+        color: #555;
+    }
+
+    ngx-dropzone-preview {
+        display: inline-block;
+        margin: 10px;
+    }
+}
+
+.uploaded-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.uploaded-preview {
+    border-radius: 20px;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.fab-button {
+    position: fixed !important;
+    bottom: 16px;
+    right: 16px;
+}
+
+.service-image {
+    max-width: 100%;
+    height: 100px;
+    object-fit: cover;
+}
+
+.service-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 48px;
+}
+
+.line {
+    border-left: 2px solid #e0e0e0;
+    margin: 0;
+}
+
+// Estilos para el historial de pagos
+.payment-history {
+    padding: 5px;
+}
+
+// Estilos para el título del historial de pagos
+.payment-history h3 {
+    text-align: center;
+    margin: 0;
+    padding-bottom: 25px;
+}
+
+// Estilos para la tabla de historial de pagos
+.payment-table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+// Estilos para cada fila de la tabla de historial de pagos
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+// Estilos para la última fila de la tabla de historial de pagos
+.payment-row:last-child {
+    border-bottom: none;
+}
+
+// Estilos para la fecha del pago
+.payment-date {
+    text-align: left;
+    font-size: 16px;
+}
+
+// Estilos para el monto del pago
+.payment-amount {
+    text-align: right;
+    font-size: 16px;
+    font-weight: 600;
+    color: #4caf50;
+}
+
+//Estilos del boton de la Url de servicios
+.collaborator-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar horizontalmente */
+    text-align: center; /* Asegurar que el texto también se centre */
+}
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.custom-button {
+    display: inline-flex;
+    padding: 8px 10px;
+    border: 1px solid #b9b9b9;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #000000;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+.custom-button .icon {
+    font-size: 18px;
+}
+.custom-button:hover {
+    background-color: #a9afb1b9;
+}
+
+.tam_cart_services{
+    max-height: 75vh;
+    min-height: 50vh;
+    height: auto;
+}
+
+//Para quitar el scroll de la plantilla por defecto en services-modal
+.mat-mdc-dialog-content{
+	overflow: visible !important;
+}
+//Para agrandar la casilla de descripcion
+.size_des{
+	height: 40px !important;
+}

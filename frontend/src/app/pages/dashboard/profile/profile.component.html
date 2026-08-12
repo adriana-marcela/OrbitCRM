@@ -1,0 +1,217 @@
+<div class="row">
+    <!-- Columna para el perfil de usuario -->
+    <div class="col-lg-4">
+        <mat-card class="cardWithShadow profile p-24">
+            <div class="upload-container">
+
+                <!-- Zona de subida de imagen con ngx-dropzone -->
+                <ngx-dropzone *ngIf="!imagePreview" (change)="onFileDropped($event)" class="custom-dropzone" [multiple]="false">
+                    <ngx-dropzone-label>
+                        <div class="dropzone-content">
+                            <mat-icon class="upload-icon">cloud_upload</mat-icon>
+                        </div>
+                    </ngx-dropzone-label>
+                </ngx-dropzone>
+
+                <!-- Vista previa de imagen subida -->
+                <div *ngIf="imagePreview" class="uploaded-image">
+                    <img [src]="imagePreview" alt="Uploaded Image" class="uploaded-preview" />
+                    <button mat-button color="warn" (click)="onFileRemove(files[0])" style="margin-top: 10px;">
+                        Eliminar imagen
+                    </button>
+                </div>
+                <span class="upload-hint" *ngIf="!imagePreview">Subir fotografia</span>
+            </div>
+
+            <!-- Nombre y posición del usuario -->
+            <mat-card-title class="collaborator-name">
+                {{ userData.name || "" }} {{ userData.lastname || "" }}
+            </mat-card-title>
+            <mat-card-subtitle class="collaborator-position">
+                {{ userData.position || "" }}
+            </mat-card-subtitle>
+        </mat-card>
+    </div>
+
+    <!-- Columna para formularios de información de usuario y contraseña -->
+    <div class="col-lg-8">
+        <mat-card class="cardWithShadow p-24">
+
+            <mat-tab-group>
+                <!-- Pestaña de Información General -->
+                <mat-tab label="Información General">
+                    <form [formGroup]="userForm" class="collaborator-info-modal" style="margin-top: 25px;">
+                        <div class="row">
+
+                            <!-- Campo para el nombre -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>person</mat-icon>
+                                    <mat-label>Nombre</mat-label>
+                                    <input matInput formControlName="name" type="text" maxlength="30" (input)="validateText($event)"/>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para el apellido -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>person</mat-icon>
+                                    <mat-label>Apellidos</mat-label>
+                                    <input matInput formControlName="lastname" type="text" maxlength="30" (input)="validateText($event)"/>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <!-- Selección de tipo de documento -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>assignment_ind</mat-icon>
+                                    <mat-label>Tipo de Documento</mat-label>
+                                    <mat-select formControlName="documentType">
+                                        <mat-option value="CC">Cédula de ciudadanía</mat-option>
+                                        <mat-option value="CE">Cédula de extranjería</mat-option>
+                                        <mat-option value="P">Pasaporte</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para el número de documento -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>fingerprint</mat-icon>
+                                    <mat-label>Número de documento</mat-label>
+                                    <input matInput formControlName="documentNumber" type="number" (input)="onInput($event, 12)"/>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <!-- Campo para el correo electrónico -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>email</mat-icon>
+                                    <mat-label>Correo electrónico</mat-label>
+                                    <input matInput formControlName="email" type="email" readonly />
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para el teléfono -->
+                            <div class="col-lg-6">
+								<mat-form-field appearance="outline" class="w-100" color="primary">
+									<mat-icon matPrefix>phone</mat-icon>
+									<mat-label>Teléfono</mat-label>
+									<input matInput formControlName="phone" (input)="onInput($event, 15, userForm.get('phone'), 'phone')" />
+								</mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <!-- Selección de país -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>public</mat-icon>
+                                    <mat-label>País</mat-label>
+                                    <mat-select formControlName="country">
+                                        <mat-option *ngFor="let country of countries" [value]="country">
+                                            {{ country }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para el departamento -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>place</mat-icon>
+                                    <mat-label>Departamento</mat-label>
+                                    <input matInput formControlName="department" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <!-- Campo para la ciudad -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>location_city</mat-icon>
+                                    <mat-label>Ciudad</mat-label>
+                                    <input matInput formControlName="city" />
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para la dirección -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>home</mat-icon>
+                                    <mat-label>Dirección</mat-label>
+                                    <input matInput formControlName="address" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="footer-button">
+
+                            <!-- Botón para guardar cambios -->
+                            <button mat-flat-button color="primary" type="button" (click)="updatedInfo()" [disabled]="!userForm.valid">
+                                <mat-icon>save</mat-icon> Guardar cambios
+                            </button>
+                        </div>
+                    </form>
+                </mat-tab>
+
+                <!-- Pestaña de Contraseña -->
+                <mat-tab label="Contraseña">
+                    <form [formGroup]="passForm" style="margin-top: 25px;" class="collaborator-bank-info-modal">
+                        <mat-form-field appearance="outline" class="w-100" color="primary">
+                            <mat-icon matPrefix>lock</mat-icon>
+                            <mat-label>Contraseña actual</mat-label>
+                            <input matInput [type]="showCurrentPassword ? 'text' : 'password'" formControlName="currentPassword" />
+                            <button mat-icon-button matSuffix (click)="togglePasswordVisibility('currentPassword')">
+                                <mat-icon>{{ showCurrentPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <div class="row">
+
+                            <!-- Campo para nueva contraseña -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>lock</mat-icon>
+                                    <mat-label>Nueva contraseña</mat-label>
+                                    <input matInput [type]="showNewPassword ? 'text' : 'password'" formControlName="newPassword" />
+                                    <button mat-icon-button matSuffix (click)="togglePasswordVisibility('newPassword')">
+                                        <mat-icon>{{ showNewPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                                    </button>
+                                    <mat-error *ngIf="passForm.get('newPassword')?.hasError('minlength')">
+                                        La contraseña debe tener al menos 8 caracteres.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Campo para confirmar nueva contraseña -->
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100" color="primary">
+                                    <mat-icon matPrefix>lock</mat-icon>
+                                    <mat-label>Confirmar nueva contraseña</mat-label>
+                                    <input matInput [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" id="confirmPassword" />
+                                    <button mat-icon-button matSuffix (click)="togglePasswordVisibility('confirmPassword')">
+                                        <mat-icon>{{ showConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                                    </button>
+                                    <mat-error *ngIf="!passwordsMatch()">
+                                        Las contraseñas no coinciden.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="footer-button">
+
+                            <!-- Botón para actualizar contraseña -->
+                            <button mat-flat-button color="primary" type="button" (click)="changePassword()" [disabled]="!passForm.valid">
+                                <mat-icon>save</mat-icon> Actualizar contraseña
+                            </button>
+                        </div>
+                    </form>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card>
+    </div>
+</div>

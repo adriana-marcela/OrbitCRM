@@ -1,0 +1,45 @@
+// Importa las variables y los mixins del proyecto
+@use 'variables';
+@use 'mixins';
+
+// Establece el estilo para la clase row
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    // Ajusta el padding para que coincida con el gutter
+    margin-right: variables.$grid-gutter * -.5;
+    margin-left: variables.$grid-gutter * -.5;
+}
+
+// Establece el estilo para la clase no-gutters
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+    // Elimina el padding en las columnas
+    >.col,
+    >[class*='col-'] {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+
+// Genera las clases para las columnas
+@include mixins.make-grid-columns();
+
+
+// Itera sobre los breakpoints y los infix y genera las clases para
+// cada breakpoint
+@each $breakpoint, $infix in variables.$breakpoint-infixs {
+    @if ($breakpoint=='xsmall') {
+        // Genera las clases para el breakpoint xsmall
+        @include mixins.loop-grid-columns(variables.$grid-columns, $infix);
+    }
+
+    @else {
+        // Genera las clases para los breakpoints mayores que xsmall
+        // utilizando el mixin bp-gt
+        @include mixins.bp-gt($breakpoint) {
+            @include mixins.loop-grid-columns(variables.$grid-columns, $infix);
+        }
+    }
+}

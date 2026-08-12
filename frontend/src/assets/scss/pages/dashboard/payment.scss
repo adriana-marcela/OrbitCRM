@@ -1,0 +1,48 @@
+.table-responsive {
+	width: 100%;
+	overflow-x: auto;
+  }
+
+  //Responsive para pantallas pequeñas (Moviles)
+
+  @media screen and (max-width: 768px) {
+	/* Estilos para la barra de búsqueda y filtros */
+	.agendaForm {
+	  flex-direction: column;
+	  align-items: stretch;
+	  gap: 10px;
+	}
+
+	.search-bar,
+	.search-header {
+	  width: 100%;
+	}
+
+	.filter-container {
+	  margin-right: 10px;
+	}
+
+	/* Tabla: reduce padding, font-size si es necesario */
+	table mat-header-cell,
+	table mat-cell {
+	  font-size: 12px;
+	  padding: 8px 4px;
+	  white-space: nowrap; /* Evita que se rompa en múltiples líneas */
+	}
+
+	/* Reducción de altura del paginator */
+	mat-paginator {
+	  font-size: 12px;
+	}
+
+	/* Estilo de la tarjeta (mat-card) */
+	.cardWithShadow {
+	  margin: 0;
+	  padding: 0;
+	}
+
+	.p-24 {
+	  padding: 8px !important;
+	}
+  }
+

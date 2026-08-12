@@ -1,0 +1,164 @@
+<div class="roles-wrapper">
+	<!-- Lista de Roles como tarjetas -->
+	<div *ngIf="roles.length > 0" class="roles-list">
+		<mat-card class="role-cards">
+			<mat-card-content class="p-24">
+				<mat-card-title>Roles</mat-card-title>
+				<div class="roles-scrollable">
+					<div>
+					<mat-list>
+						<mat-list-item
+							*ngFor="let role of roles"
+							class="conte-roles"
+							[class.selected]="role === selectedRole"
+							(click)="selectRole(role)"
+						>
+							<div style="padding: 5px 0px;">
+								<div>{{ role.name }}</div>
+							</div>
+						</mat-list-item>
+					</mat-list>
+				</div>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</div>
+
+	<!-- Aqui empieza el HTML de la ventana de la derecha del roles-modal -->
+	<div class="col-lg-8">
+		<mat-card class="role-cards">
+			<mat-card-content
+				class="p-24"
+				*ngIf="selectedRole; else placeholder"
+			>
+				<h2>{{ selectedRole.name }}</h2>
+
+				<mat-tab-group>
+					<!-- TAB: Clientes -->
+					<mat-tab label="Clientes">
+					  <table class="permissions-table">
+						<thead>
+						  <tr>
+							<th></th>
+							<th>Crear</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+							<th>Ver</th>
+						  </tr>
+						</thead>
+						<tbody>
+						  <tr *ngFor="let section of clienteSections">
+							<td>{{ section.label }}</td>
+							<td><mat-checkbox [(ngModel)]="permissions['Cliente'][section.key]['crear']" [disabled]="securityDisable"></mat-checkbox></td>
+							<td><mat-checkbox [(ngModel)]="permissions['Cliente'][section.key]['editar']" [disabled]="securityDisable"></mat-checkbox></td>
+							<td><mat-checkbox [(ngModel)]="permissions['Cliente'][section.key]['eliminar']" [disabled]="securityDisable"></mat-checkbox></td>
+							<td><mat-checkbox [(ngModel)]="permissions['Cliente'][section.key]['ver']" [disabled]="securityDisable"></mat-checkbox></td>
+						  </tr>
+						</tbody>
+					  </table>
+					</mat-tab>
+
+					<!-- TAB: Colaboradores -->
+					<mat-tab label="Colaboradores">
+						<table class="permissions-table">
+						  <thead>
+							<tr>
+							  <th></th>
+							  <th>Crear</th>
+							  <th>Editar</th>
+							  <th>Eliminar</th>
+							  <th>Ver</th>
+							</tr>
+						  </thead>
+						  <tbody>
+							<tr *ngFor="let section of colaboradoresSections">
+							  <td>{{ section.label }}</td>
+							  <td><mat-checkbox [(ngModel)]="permissions['Colaboradores'][section.key]['crear']"></mat-checkbox></td>
+							  <td><mat-checkbox [(ngModel)]="permissions['Colaboradores'][section.key]['editar']"></mat-checkbox></td>
+							  <td><mat-checkbox [(ngModel)]="permissions['Colaboradores'][section.key]['eliminar']"></mat-checkbox></td>
+							  <td><mat-checkbox [(ngModel)]="permissions['Colaboradores'][section.key]['ver']"></mat-checkbox></td>
+							</tr>
+						  </tbody>
+						</table>
+					  </mat-tab>
+
+
+					<!-- TAB: Servicios -->
+					<mat-tab label="Servicios">
+					  <table class="permissions-table">
+						<thead>
+						  <tr>
+							<th></th>
+							<th>Crear</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+							<th>Ver</th>
+						  </tr>
+						</thead>
+						<tbody>
+						  <tr>
+							<td>General</td>
+							<td><mat-checkbox [(ngModel)]="permissions['Servicios']['crear']" [disabled]="securityDisable"></mat-checkbox></td>
+							<td><mat-checkbox [(ngModel)]="permissions['Servicios']['editar']" [disabled]="securityDisable"></mat-checkbox></td>
+							<td><mat-checkbox [(ngModel)]="permissions['Servicios']['eliminar']" [disabled]="securityDisable"></mat-checkbox></td>
+							<td><mat-checkbox [(ngModel)]="permissions['Servicios']['ver']" [disabled]="securityDisable"></mat-checkbox></td>
+						  </tr>
+						</tbody>
+					  </table>
+					</mat-tab>
+
+					<!-- TAB: Pagos -->
+					<mat-tab label="Pagos">
+					  <table class="permissions-table">
+						<thead>
+						  <tr>
+							<th></th>
+							<th></th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+							<th>Ver</th>
+						  </tr>
+						</thead>
+						<tbody>
+						  <tr>
+							<td>General</td>
+							<td><!-- Vacío si no aplica --></td>
+							<td><mat-checkbox [(ngModel)]="permissions['Pagos']['editar']" [disabled]="securityDisable"></mat-checkbox></td>
+							<td><mat-checkbox [(ngModel)]="permissions['Pagos']['eliminar']" [disabled]="securityDisable"></mat-checkbox></td>
+							<td><mat-checkbox [(ngModel)]="permissions['Pagos']['ver']" [disabled]="securityDisable"></mat-checkbox></td>
+						  </tr>
+						</tbody>
+					  </table>
+					</mat-tab>
+
+				  </mat-tab-group>
+				  <br>
+				<div class="col-lg-6" *ngIf="!isDefaultRole(selectedRole?.name)">
+					<label style="font-weight: bold;">¿Es Colaborador?</label>
+					<mat-checkbox
+					  [(ngModel)]="selectedRole.is_staff"
+					  [disabled]="securityDisable"
+					></mat-checkbox>
+				  </div>
+				<br>
+				<!-- Botones para eliminar y guardar -->
+				<div class="mt-4 botones-acciones">
+					<button *ngIf="!isDefaultRole(selectedRole?.name)" mat-flat-button color="warn" disabled={{this.securityDisableCli}} type="button" (click)="delete()"> <mat-icon>delete</mat-icon>Eliminar</button>
+					<button mat-flat-button color="primary" (click)="saveRole()"><mat-icon>save</mat-icon>Guardar</button>
+				</div>
+			</mat-card-content>
+			<!-- ventana izquierda cuando no se ha mostrado ningun rol-->
+			<ng-template #placeholder>
+				<mat-card-content class="p-24">
+					<div class="no-roles">
+						<p>Selecciona un rol para asignarle los permisos 😊</p>
+					</div>
+				</mat-card-content>
+			</ng-template>
+		</mat-card>
+	</div>
+	<!-- Botón para crear un nuevo rol -->
+	<button mat-fab color="primary" class="fab-button" (click)="openNewRole()">
+		<mat-icon>add</mat-icon>
+	</button>
+</div>

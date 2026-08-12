@@ -1,0 +1,31 @@
+/**
+ * Genera las utilidades para los bordes de los elementos.
+ *
+ * Genera las utilidades para los bordes de los elementos, como
+ * el borde, el borde superior, el borde inferior, el borde izquierdo
+ * y el borde derecho. Estas utilidades se pueden utilizar en
+ * cualquier lugar del framework de CSS.
+ *
+ * @see variables
+ * @see https://sass-lang.com/documentation/values/maps
+ */
+@use 'variables';
+
+$utilities: (
+    'border': (property: border,
+        class: b,
+        values: variables.$borders ),
+    'border-top': (property: border-top,
+        class: b-t,
+        values: variables.$borders ),
+    'border-bottom': (property: border-bottom,
+        class: b-b,
+        values: variables.$borders ),
+    'border-left': (property: border-left,
+        class: b-l,
+        values: variables.$borders ),
+    'border-right': (property: border-right,
+        class: b-r,
+        values: variables.$borders ),
+
+);

@@ -1,0 +1,21 @@
+<!-- Título del diálogo, muestra el título proporcionado en los datos -->
+<h2 mat-dialog-title>{{ data.title }}</h2>
+
+<!-- Contenido del diálogo, muestra el mensaje proporcionado en los datos -->
+<mat-dialog-content>
+    <p>{{ data.message }}</p>
+</mat-dialog-content>
+
+<!-- Acciones del diálogo cuando se requiere confirmación -->
+<mat-dialog-actions *ngIf="data.isConfirm" align="end">
+    <!-- Botón para cerrar el diálogo sin confirmar -->
+    <button mat-button mat-dialog-close>No</button>
+    <!-- Botón para cerrar el diálogo confirmando la acción -->
+    <button mat-button color="primary" [mat-dialog-close]="true">Sí</button>
+</mat-dialog-actions>
+
+<!-- Acciones del diálogo cuando no se requiere confirmación -->
+<mat-dialog-actions *ngIf="!data.isConfirm" align="end">
+    <!-- Botón para cerrar el diálogo -->
+    <button mat-button mat-dialog-close>Aceptar</button>
+</mat-dialog-actions>

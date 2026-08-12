@@ -1,0 +1,23 @@
+/**
+ * Archivo que contiene los overrides de los estilos de Angular Material.
+ * En este archivo se sobrescriben los estilos de los componentes de
+ * Angular Material para que coincidan con el diseño del template.
+ *
+ * @see https://material.angular.io/guide/theming
+ * @see https://material.angular.io/components/toolbar/overview
+ */
+html {
+    @import "./buttons";
+    @import "./drawer";
+    @import "./form";
+    @import "./card";
+    @import "./typography";
+    @import "./borderColor";
+    @import "./table";
+    @import "./list";
+    @import "./checkbox";
+}
+
+.topbar {
+    background-color: $toolbar;
+}

@@ -1,0 +1,77 @@
+/**
+ * Estilos para el header
+ *
+ * Establece el estilo para el header. Pone el fondo en $toolbar, lo
+ * coloca en la parte superior de la pantalla y le da un borde redondeado.
+ * Luego establece el estilo para el dropdown del men  del header, 
+ * estableciendo el ancho m nimo en 200px.
+ *
+ * Por  ltimo, establece el estilo para el objeto del men  desplegable,
+ * estableciendo que ocupe todo el espacio disponible.
+ */
+html .topbar {
+    background-color: $toolbar;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+    height: $header-height;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+}
+
+.topbar-dd {
+    min-width: 200px !important;
+}
+
+.object-cover {
+    object-fit: cover;
+}
+
+.mat-mdc-menu-panel.mat-mdc-menu-panel {
+    box-shadow: $box-shadow !important;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+    padding: 0 26px !important;
+}
+
+.matero-user-panel {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0 !important;
+    cursor: pointer;
+    background-color: var(--user-panel-background-color);
+    border-radius: 0.75rem;
+    outline: none;
+    border: none;
+
+    &:hover,
+    &:focus {
+        background-color: var(--user-panel-hover-background-color);
+    }
+}
+
+.matero-user-panel-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50rem;
+    transition: transform mat.$private-swift-ease-out-duration mat.$private-swift-ease-out-timing-function;
+    transform-origin: 0 1.5rem;
+
+    [dir='rtl'] & {
+        transform-origin: 3rem 1.5rem;
+    }
+}
+
+.header-name {
+    font-size: 14px;
+    margin-right: 15px;
+}
+
+@media screen and (max-width: 768px) {
+    .mat-toolbar-row,
+    .mat-toolbar-single-row {
+        padding: 0 26px 0 10px !important;
+    }
+}

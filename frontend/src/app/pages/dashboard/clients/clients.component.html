@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="col-lg-12">
+        <mat-card class="cardWithShadow">
+            <mat-card-content class="p-24">
+
+                <!-- Botón para alternar entre vistas -->
+                <div class="view-toggle">
+                    <button mat-icon-button color="primary" (click)="toggleView('list')">
+                        <mat-icon>list</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="toggleView('grid')">
+                        <mat-icon>grid_view</mat-icon>
+                    </button>
+                </div>
+
+                <!-- Si no hay clientes, muestra un mensaje -->
+                <div *ngIf="!clientItems || clientItems.length === 0" class="no-events">
+                    <p>No hay clientes creados</p>
+                    <button mat-flat-button color="primary" class="m-t-20" (click)="openAddClientModal()">
+                        Crear nuevo cliente
+                    </button>
+                </div>
+
+                <!-- Vista de tarjetas -->
+                <div *ngIf="viewMode === 'grid' && clientItems && clientItems.length > 0">
+                    <div class="row">
+                        <div class="col-lg-3" *ngFor="let clientItem of clientItems">
+                            <mat-card class="collaborator-card shadow" (click)="openClientModal(clientItem)" class="tam_cart">
+                                <mat-card-header class="collaborator-header">
+                                    <img [src]="clientItem.photo || 'assets/img/profile/profile-default.png'"
+                                        alt="clientes" width="100" class="rounded-circle service-image" />
+                                    <mat-card-title class="collaborator-name">{{ clientItem.fullname }}</mat-card-title>
+                                </mat-card-header>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vista de lista -->
+                <div *ngIf="viewMode === 'list' && clientItems && clientItems.length > 0"
+                    class="table-section table-responsive payment-history">
+
+					<!-- Selector de tamaño de página -->
+					<div class="agendaForm" style="margin-top: 10px; display: flex; justify-content: space-between;">
+						<mat-form-field class="search-bar">
+							<mat-icon matPrefix>search</mat-icon>
+							<input matInput [formControl]="nameFilter" placeholder="Buscar">
+						</mat-form-field>
+
+						<mat-form-field appearance="outline" color="primary">
+							<mat-label>Elementos por página</mat-label>
+							<mat-select [(value)]="pageSize" (selectionChange)="onPageSizeChange($event.value)">
+								<mat-option value="50">50</mat-option>
+								<mat-option value="100">100</mat-option>
+								<mat-option value="200">200</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+
+                    <table mat-table
+                        [dataSource]="filteredClients.slice((pageIndex * pageSize), ((pageIndex + 1) * pageSize))">
+
+                        <!-- Logo -->
+                        <ng-container matColumnDef="img">
+                            <th mat-header-cell *matHeaderCellDef class="box"> Logo </th>
+                            <td mat-cell *matCellDef="let clientItem" style="text-align: center;">
+                                <img [src]="clientItem.photo || 'assets/img/profile/profile-default.png'" alt="Logo"
+                                    width="50" class="rounded-circle" />
+                            </td>
+                        </ng-container>
+
+                        <!-- Nombre -->
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef class="box"> Nombre </th>
+                            <td mat-cell *matCellDef="let clientItem" style="text-align: center;"> {{ clientItem.fullname }}</td>
+                        </ng-container>
+
+                        <!-- Correo electrónico -->
+                        <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef class="box"> Correo </th>
+                            <td mat-cell *matCellDef="let clientItem" style="text-align: center;"> {{ clientItem.email
+                                }} </td>
+                        </ng-container>
+
+                        <!-- Fila clickeable -->
+                        <tr mat-header-row *matHeaderRowDef="['img', 'name', 'email']"></tr>
+                        <tr mat-row *matRowDef="let clientItem; columns: ['img', 'name', 'email'];"
+                            (click)="openClientModal(clientItem)" class="clickable-row">
+                        </tr>
+                    </table>
+
+                    <!-- Paginador -->
+                    <mat-paginator [length]="filteredClients.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+                        (page)="onPageChange($event)">
+                    </mat-paginator>
+                </div>
+
+                <!-- Botón para crear un nuevo cliente -->
+                <button *ngIf="user.is_staff" mat-fab color="primary" class="fab-button" (click)="openAddClientModal()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

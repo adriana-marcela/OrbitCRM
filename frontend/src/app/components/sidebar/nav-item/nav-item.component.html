@@ -1,0 +1,19 @@
+<!-- Si el item es un caption, lo muestra como un subtítulo -->
+<div mat-subheader *ngIf="item.navCap" class="nav-caption">
+    {{ item.navCap }}
+</div>
+
+<!-- Si el item no es un caption, lo muestra como un enlace -->
+<a mat-list-item (click)="onItemSelected(item)"
+    [ngClass]="{'mat-toolbar mat-primary activeMenu': item.route ? router.isActive(item.route, true) : false,}"
+    class="menu-list-item primary" *ngIf="!item.navCap">
+
+    <!-- Icono del item -->
+    <mat-icon class="d-flex routeIcon" [matBadge]="item.badge > 0 ? item.badge : null" matBadgeColor="primary"
+        matListItemIcon>
+        {{ item.iconName }} <!-- Asegúrate de que item.iconName sea un nombre válido -->
+    </mat-icon>
+
+    <!-- Texto del item -->
+    <span class="hide-menu">{{ item.displayName }}</span>
+</a>

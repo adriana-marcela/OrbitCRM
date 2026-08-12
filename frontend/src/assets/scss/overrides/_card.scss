@@ -1,0 +1,73 @@
+// Establece los estilos para los componentes de tipo card de Angular Material.
+// Estos estilos se aplican a los componentes que se encuentran en las páginas
+// de la aplicación.
+//
+// @see https://material.angular.io/components/card/overview
+// @see https://material.angular.io/components/chips/overview
+// @see https://material.angular.io/components/button/overview
+//
+// Author: Wrappixel
+// Date: 2022-01-11
+// Version: 1.0.0
+//
+// Copyright (c) 2022 Wrappixel
+// Licensed under MIT (https://github.com/wrappixel/spike-angular-pro/blob/master/LICENSE)
+//
+
+// Establece los estilos para los componentes de tipo card
+.mat-mdc-card {
+    margin-bottom: 30px;
+    border-radius: $border-radius;
+}
+
+// Establece los estilos para los t tulos de los componentes de tipo card
+.mat-mdc-card-header {
+    padding: 24px;
+    align-items: center;
+}
+
+// Establece los estilos para los contenidos de los componentes de tipo card
+// .mat-mdc-card-content {
+//     padding: 15px;
+// }
+
+// Establece los estilos para los componentes de tipo card
+// para que tengan un fondo blanco
+.mat-mdc-card {
+    background-color: $cardbg;
+}
+
+// Clase para dar un borde redondeado a los componentes de tipo card
+.cardWithShadow {
+    box-shadow: $cardshadow !important;
+    flex-grow: 1;
+}
+
+// Establece los estilos para los t tulos de los componentes de tipo card
+// para que tengan un tama o de letra de 1.6rem
+.mat-mdc-card-title {
+    line-height: 1.6rem;
+}
+
+// Establece los estilos para los botones de los componentes de tipo card
+.mdc-card__actions {
+    padding: 24px;
+}
+
+// Establece los estilos para los componentes de tipo card
+// con el tema predeterminado
+.theme-card.mat-mdc-card {
+    .mat-mdc-card-header {
+        padding: 16px 24px;
+    }
+
+    .mat-mdc-card-content {
+        padding: 24px;
+    }
+}
+
+// Establece los estilos para los componentes de tipo chip
+.mat-mdc-chip {
+    height: 24px;
+    font-size: 14px;
+}

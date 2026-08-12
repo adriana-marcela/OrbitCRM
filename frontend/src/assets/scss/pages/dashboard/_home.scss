@@ -1,0 +1,533 @@
+// .col-sm-6 {
+//     display: flex !important;
+//     flex-direction: column;
+//     flex-grow: 1;
+// }
+
+//Estilos de las notificaciones
+
+.notification-container {
+  max-height: 300px; // o el valor que prefieras
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.notification-box {
+  border: 2px solid rgb(163, 163, 163);
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.notification-header {
+  text-align: right;
+  color: rgb(163, 163, 163);
+}
+
+.notification-body {
+  font-size: 15px;
+}
+//Se termina el estilo de las notificaciones
+
+.title_created_by_name{
+	text-align: center;
+	font-weight: bold;
+}
+
+.no-events {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+
+    p {
+        text-align: center;
+        color: #757575;
+    }
+}
+
+.timeline {
+    // Estilos para el timeline
+    position: relative;
+
+    .timeline-item {
+        // Estilos para cada item del timeline
+        position: relative;
+        padding-bottom: 20px;
+
+        .time {
+            padding: 0 16px 6px 0;
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+
+        .desc {
+            padding: 0 16px;
+            // text-align: justify;
+        }
+
+        .timline-border {
+            width: 1px;
+            height: 100%;
+            background-color: $borderColor;
+            flex-shrink: 0;
+        }
+
+        &:last-child {
+            height: 50px;
+        }
+
+        .point {
+            flex-direction: column;
+
+            .timeline-badge {
+                width: 12px;
+                height: 12px;
+                border-radius: 50px;
+                background-color: transparent;
+                flex-shrink: 0;
+
+                // Estilos para el borde de los puntos del timeline
+                &.border-primary {
+                    border: 2px solid $primary !important;
+                }
+
+                &.border-accent {
+                    border: 2px solid $accent !important;
+                }
+
+                &.border-success {
+                    border: 2px solid $success;
+                }
+
+                &.border-warning {
+                    border: 2px solid $warning;
+                }
+
+                &.border-danger {
+                    border: 2px solid $error;
+                }
+            }
+
+            .timeline-border {
+                width: 1px;
+                height: 100%;
+                background-color: $borderColor;
+                flex-shrink: 0;
+            }
+        }
+
+        &:last-child {
+            .timeline-border {
+                display: none !important;
+            }
+        }
+    }
+}
+
+.table-borderless {
+
+    .mdc-data-table__cell,
+    .mdc-data-table__header-cell {
+        border-bottom-color: transparent !important;
+
+        &:first-child {
+            padding-left: 0 !important;
+        }
+    }
+
+    .mdc-data-table__cell.mat-body-1 {
+        text-align: justify;
+        -webkit-box-orient: vertical;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+}
+
+.mat-calendar-header {
+    padding: 0 !important;
+}
+
+.mat-calendar-controls {
+    margin: 0 0 20px 0 !important;
+}
+
+.custom-calendar-container {
+    .fc {
+        border-radius: 18px;
+    }
+
+    .fc .fc-toolbar.fc-header-toolbar {
+        margin-bottom: 4em !important;
+    }
+
+    .fc-toolbar {
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+    }
+
+    .fc-view {
+        border-bottom-left-radius: 18px;
+        border-bottom-right-radius: 18px;
+    }
+
+    .fc-button {
+        border-radius: 18px;
+        border-color: $primary;
+        background-color: $primary;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .fc-button:hover,
+    .fc .fc-button-primary:not(:disabled).fc-button-active,
+    .fc .fc-button-primary:not(:disabled):active {
+        border-color: $light-primary;
+        background-color: $light-primary;
+        color: $primary;
+    }
+
+    .fc-daygrid-day,
+    .fc-daygrid-day-top,
+    .fc-scrollgrid,
+    .fc-scrollgrid-section,
+    .fc-scrollgrid-sync-inner,
+    .fc-scrollgrid-sync-footer {
+        border: none;
+    }
+
+    .fc-daygrid-day {
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .fc-daygrid-day-frame {
+        border-right: 1px solid #e0e0e0;
+    }
+
+    .fc-daygrid-day:nth-child(7n) .fc-daygrid-day-frame {
+        border-right: none;
+    }
+
+    .fc-daygrid-day-row:last-child .fc-daygrid-day {
+        border-bottom: none;
+    }
+
+    .fc .fc-scrollgrid-section>* {
+        border-width: 0px;
+    }
+
+    .fc-toolbar-title::first-letter,
+    .fc-daygrid-day-number::first-letter,
+    .fc-daygrid-day-top::first-letter {
+        text-transform: uppercase;
+    }
+
+    .fc-col-header-cell-cushion {
+        text-transform: uppercase;
+    }
+}
+
+.mat-mdc-dialog-content {
+    max-height: 100vh !important;
+}
+
+.color-box {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+//Color de las prioridades
+
+.select-primary {
+    background-color: $primary;
+}
+
+.select-warning {
+    background-color: $warning;
+}
+
+.select-success {
+    background-color: $success;
+}
+
+.select-danger {
+    background-color: $error;
+}
+
+.mdc-text-field--outlined {
+    padding-left: 5px !important;
+}
+
+.agendaForm {
+    .mdc-text-field--outlined {
+        padding-left: 22px !important;
+    }
+}
+
+.snackbar-success {
+    .mat-mdc-snackbar-surface {
+        background-color: $light-success !important;
+        color: $success !important;
+        font-weight: bold !important;
+        border-radius: 18px !important;
+    }
+
+    span {
+        color: $success !important;
+    }
+}
+
+.snackbar-error {
+    .mat-mdc-snackbar-surface {
+        background-color: $light-error !important;
+        color: $error !important;
+        font-weight: bold !important;
+        border-radius: 18px !important;
+    }
+
+    span {
+        color: $error !important;
+    }
+}
+
+textarea {
+    height: 24px !important;
+}
+
+mat-form-field .mdc-floating-label {
+    position: absolute !important;
+    top: 50% !important;
+    left: 22px !important;
+    transition: all 0.2s ease-out !important;
+}
+
+mat-form-field.mat-form-field-should-float .mdc-floating-label {
+    top: 0 !important;
+    left: 0 !important;
+    transform: translate(0, 0) !important;
+}
+
+/* Ajusta el valor del border-radius a tu preferencia */
+.mat-mdc-table {
+    border-radius: 10px;
+    overflow: hidden;
+
+    /* Aplica border-radius también a las celdas para una apariencia uniforme */
+    .mat-mdc-header-row,
+    .mat-mdc-row {
+        border-radius: 10px;
+    }
+
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background-color: #fff !important;
+
+        &:hover {
+            background-color: #fff !important;
+        }
+    }
+
+    .mat-mdc-form-field-focus-overlay {
+        background-color: #fff !important;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    mat-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    mat-header-cell,
+    mat-cell {
+        padding: 8px;
+        text-align: center;
+        font-size: 10px !important;
+    }
+
+    mat-select,
+    mat-form-field,
+    mat-input {
+        width: 100%;
+    }
+}
+
+/* Ajustes para pantalla peque a */
+@media (max-width: 1000px) {
+    .custom-calendar-container {
+
+        /* Ajusta el t tulo del calendario */
+        .fc-toolbar-title {
+            font-size: 1.25em;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* Ajusta los botones del calendario */
+        .fc-button {
+            padding: 6px 10px;
+            font-size: 0.75em;
+        }
+
+        /* Ajusta el padding de las celdas del calendario */
+        .fc-daygrid-day-frame {
+            padding: 0.25em;
+        }
+
+        /* Ajusta el tama o del n mero de d a en el calendario */
+        .fc-daygrid-day-number {
+            font-size: 0.7em;
+        }
+
+        /* Ajusta el t tulo del calendario */
+        .fc .fc-toolbar.fc-header-toolbar {
+            justify-content: center;
+            flex-direction: column;
+            margin-bottom: 2em !important;
+        }
+
+        /* Ajusta el tama o del texto de los encabezados del calendario */
+        .fc-col-header-cell-cushion {
+            font-size: 0.7em;
+        }
+
+        /* Ajusta el tama o del contenedor del calendario */
+        .fc .fc-view-harness {
+            height: 425px !important;
+        }
+    }
+
+    /* Ajusta el padding de las celdas */
+    .col-md-6 {
+        padding: 0;
+
+        .button-responsive {
+            margin-top: 10px;
+        }
+    }
+}
+
+/* Estilos para la tabla de historial de pagos */
+.payment-history {
+
+    /* Ajusta el tama o del texto de los encabezados */
+    .centered-table th {
+        font-weight: bold;
+    }
+
+    td {
+        font-size: 14px;
+    }
+
+    /* Ajusta el alineamiento de los iconos de sorting */
+    .mat-sort-header-container {
+        justify-content: center;
+    }
+
+    /* Ajusta el color del texto de los pagos */
+    .paid {
+        color: $success !important;
+    }
+
+    .unpaid {
+        color: $error !important;
+    }
+}
+
+/* Estilos para el contenedor de la barra de b squeda */
+.search-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: -30px;
+
+    .search-bar {
+        width: 300px;
+    }
+
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background-color: #fff !important;
+    }
+}
+
+/* Estilos para el contenedor de los dropdowns de filtrado */
+.filter-dropdown {
+    position: absolute;
+    right: 280px;
+    top: 90px;
+    background: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 16px 26px 16px 16px;
+    z-index: 10;
+}
+/* Estilos para el contenedor del bot n de cierre flotante */
+.close-button-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+/* Estilos para el bot n de cierre flotante */
+.floating-close-button {
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos para el icono del bot n de cierre flotante */
+.floating-close-button mat-icon {
+    font-size: 24px;
+    color: #000;
+}
+
+/* Estilos para el bot n de cierre flotante al pasar el mouse por encima */
+.floating-close-button:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* Estilos para el contenedor de los dialogos */
+.mat-dialog-container {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para el t tulo de los dialogos */
+.mat-dialog-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Estilos para el contenido de los dialogos */
+.mat-dialog-content {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Estilos para los botones de los dialogos */
+.mat-dialog-actions button {
+    font-size: 14px;
+}
+
+/* Estilo de los titulos de Clientes, Colaboradores y pagos*/
+.box{
+	font-weight: bold !important;
+	text-align: center !important;
+}

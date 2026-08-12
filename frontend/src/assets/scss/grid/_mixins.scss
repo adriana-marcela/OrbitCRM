@@ -1,0 +1,111 @@
+// Documentaci n en espa ol
+// ------------------------------------
+//
+// Esta archivo contiene las funciones y mixins
+// para manejar las columnas de Bootstrap en
+// los breakpoints.
+//
+// @see https://getbootstrap.com/docs/4.5/layout/grid/
+//
+// @author  Ismael Heredia <iheredia@email.com>
+// @version 1.0.0
+// @license MIT
+//
+// @since   2020-01-01
+// ------------------------------------
+
+@use 'sass:map';
+@use 'sass:math';
+@use 'variables';
+
+// Funci n para obtener el valor de un breakpoint dado.
+// @param {String} $name
+// @param {Map}    $breakpoints
+// @return {Length}
+@function bp($name, $breakpoints: variables.$breakpoints) {
+    $min: map.get($breakpoints, $name);
+
+    @return $min;
+}
+
+// Media de al menos el ancho del breakpoint m nimo.
+// @param {String} $name
+// @param {Map}    $breakpoints
+@mixin bp-gt($name, $breakpoints: variables.$breakpoints) {
+    $min: bp($name, $breakpoints);
+
+    @if $min {
+        @media (min-width: $min) {
+            @content;
+        }
+    }
+
+    @else {
+        @content;
+    }
+}
+
+// Media de a lo m s el ancho del breakpoint m ximo.
+// @param {String} $name
+// @param {Map}    $breakpoints
+@mixin bp-lt($name, $breakpoints: variables.$breakpoints) {
+    $max: bp($name, $breakpoints) - 1px;
+
+    @if $max {
+        @media (max-width: $max) {
+            @content;
+        }
+    }
+
+    @else {
+        @content;
+    }
+}
+
+// Crea las columnas para cada breakpoint.
+// @param {Number} $i      [1]
+// @param {String} $list   ['.col']
+@mixin make-grid-columns($i: 1, $list: '.col') {
+    @each $breakpoint, $infix in variables.$breakpoint-infixs {
+        $infix: if($infix =='', '', '-#{$infix}');
+
+        @if ($infix !='') {
+            $list: '#{$list}, .col#{$infix}';
+        }
+
+        @for $i from 1 through variables.$grid-columns {
+            $list: '#{$list}, .col#{$infix}-#{$i}';
+        }
+    }
+
+    #{$list} {
+        position: relative;
+        width: 100%;
+        padding-right: variables.$grid-gutter * .5;
+        padding-left: variables.$grid-gutter * .5;
+    }
+}
+
+// Crea las columnas para cada breakpoint.
+// @param {Number} $columns [$grid-columns]
+// @param {String} $breakpoint-infix ['']
+@mixin loop-grid-columns($columns: $grid-columns, $breakpoint-infix: '') {
+    $infix: if($breakpoint-infix =='', '', '-#{$breakpoint-infix}');
+
+    .col#{$infix} {
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 100%;
+    }
+
+    @for $i from 1 through $columns {
+        .col#{$infix}-#{$i} {
+            flex: 0 0 math.percentage(math.div($i, $columns));
+            max-width: math.percentage(math.div($i, $columns));
+        }
+
+        .offset#{$infix}-#{$i} {
+            margin-left: math.percentage(math.div($i, $columns));
+        }
+    }
+}

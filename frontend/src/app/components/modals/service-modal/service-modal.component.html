@@ -1,0 +1,89 @@
+<!-- Contenedor del botón de cerrar -->
+<div class="close-button-container">
+    <button mat-icon-button mat-dialog-close aria-label="Cerrar" class="floating-close-button">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<!-- Contenido del diálogo -->
+<div mat-dialog-content class="mat-mdc-card-content p-32">
+    <form [formGroup]="serviceForm">
+        <!-- Contenedor de subida de archivos -->
+        <div class="upload-container">
+            <ngx-dropzone *ngIf="!imagePreview" (change)="onFileDropped($event)" class="custom-dropzone" [multiple]="false">
+                <ngx-dropzone-label>
+                    <div class="dropzone-content">
+                        <mat-icon class="upload-icon">cloud_upload</mat-icon>
+                    </div>
+                </ngx-dropzone-label>
+            </ngx-dropzone>
+
+            <!-- Vista previa de la imagen subida -->
+            <div *ngIf="imagePreview" class="uploaded-image">
+                <img [src]="imagePreview" alt="Uploaded Image" class="uploaded-preview" />
+                <button mat-button color="warn" (click)="onRemove(files[0])" style="margin-top: 10px;">Eliminar Logo</button>
+            </div>
+            <span class="upload-hint" *ngIf="!imagePreview">Subir Logo</span>
+        </div>
+
+        <!-- Campo para el nombre del servicio -->
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label>Nombre</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input matInput formControlName="name" type="text" maxlength="50"/>
+        </mat-form-field>
+
+        <!-- Campo para la descripción del servicio -->
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label>Descripción</mat-label>
+            <mat-icon matPrefix>description</mat-icon>
+            <textarea class="size_des" matInput formControlName="description" type="text" maxlength="150"></textarea>
+        </mat-form-field>
+
+        <!-- Campo para seleccionar la categoría del servicio -->
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label>Categoría</mat-label>
+            <mat-icon matPrefix>category</mat-icon>
+            <mat-select formControlName="category">
+                <mat-option value="Ok Web">Ok Web</mat-option>
+                <mat-option value="Constructor">Constructor</mat-option>
+                <mat-option value="Temas">Temas</mat-option>
+                <mat-option value="Complemento">Complemento</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+   		<!-- Campo para URL del servicio -->
+		<mat-form-field appearance="outline" class="w-100" color="primary">
+    		<mat-label>URL</mat-label>
+    		<mat-icon matPrefix>link</mat-icon>
+    		<input matInput formControlName="url" type="url" maxlength="200" placeholder="https://ejemplo.com"/>
+		</mat-form-field>
+
+        <!-- Acciones del diálogo -->
+        <div mat-dialog-actions class="row">
+            <!-- Botón para eliminar el servicio si existe -->
+            <div class="col-md-6" *ngIf="data?.service">
+                <button mat-flat-button color="warn" class="w-100" type="button" (click)="onDelete(data.service)">
+                    <mat-icon>delete_outline</mat-icon>
+                    Eliminar servicio
+                </button>
+            </div>
+
+            <!-- Botón para cancelar si no existe el servicio -->
+            <div class="col-md-6" *ngIf="!data?.service">
+                <button mat-flat-button color="accent" class="w-100" type="button" (click)="onCancel()">
+                    <mat-icon>close</mat-icon> Cancelar
+                </button>
+            </div>
+
+            <!-- Botón para guardar o añadir un nuevo servicio -->
+            <div class="col-md-6">
+                <button mat-flat-button color="primary" class="button-responsive w-100" type="button" (click)="onSubmit()"
+                    [disabled]="!serviceForm.valid">
+                    <mat-icon>{{ data.service.id ? 'save' : 'add' }}</mat-icon>
+                    {{ data.service.id ? 'Guardar cambios' : 'Añadir servicio' }}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

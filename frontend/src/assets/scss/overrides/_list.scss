@@ -1,0 +1,5 @@
+// Establece el estilo para el hover de los elementos del men
+// Pone el fondo en $hoverBgColor
+.mat-mdc-menu-item:hover:not([disabled]) {
+    background: $hoverBgColor;
+}

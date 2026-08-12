@@ -1,0 +1,157 @@
+<div class="auth-container">
+	<div class="auth-form">
+		<h2 class="title">Actualizar contraseña</h2>
+
+		<!-- Aqui empieza el formulario -->
+		<form class="form" [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+			<!-- Campo de nueva contraseña -->
+			<div class="input-group">
+				<label for="password">Nueva contraseña</label>
+				<div class="input-pack">
+					<input
+						id="password"
+						[type]="showPassword ? 'text' : 'password'"
+						formControlName="password"
+						[class.is-invalid]="
+							passwordForm.get('password')?.invalid &&
+							passwordForm.get('password')?.touched
+						"
+					/>
+					<button
+						type="button"
+						(click)="togglePasswordVisibility()"
+						class="visibility-btn"
+					>
+						<svg
+							*ngIf="showPassword"
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path
+								d="M17.94 17.94a10.37 10.37 0 0 1-5.94 1.94C7.39 19.88 4.26 16.89 2 12c2.26-4.89 5.39-7.88 9.94-7.88 2.04 0 3.97.54 5.69 1.49"
+							></path>
+							<path d="M1 1l22 22"></path>
+						</svg>
+						<svg
+							*ngIf="!showPassword"
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path
+								d="M1.5 12S4.5 6 12 6s10.5 6 10.5 6-3 6-10.5 6S1.5 12 1.5 12z"
+							></path>
+							<circle cx="12" cy="12" r="3"></circle>
+						</svg>
+					</button>
+				</div>
+				<!-- Mensaje de error para la contraseña -->
+				<div
+					*ngIf="
+						passwordForm.get('password')?.invalid &&
+						passwordForm.get('password')?.touched
+					"
+					class="error-message"
+				>
+					<p
+						*ngIf="passwordForm.get('password')?.errors?.['required']" class="invalid-feedback"
+					>
+						La contraseña es obligatoria.
+					</p>
+					<p
+						*ngIf="passwordForm.get('password')?.errors?.['passwordStrength']" class="invalid-feedback"
+					>
+						{{ passwordForm.get('password')?.errors?.['passwordStrength'] }}
+					</p>
+				</div>
+				<div *ngIf="passwordForm.errors?.['passwordsMismatch'] && passwordForm.get('confirmPassword')?.touched" class="error-message">
+					<p class="invalid-feedback">Las contraseñas no coinciden.</p>
+				</div>
+			</div>
+
+			<!-- Campo de confirmación de contraseña -->
+			<div class="input-group">
+				<label for="confirmPassword">Confirmar nueva contraseña</label>
+				<div class="input-pack">
+					<input
+						id="confirmPassword"
+						[type]="showConfirmPassword ? 'text' : 'password'"
+						formControlName="confirmPassword"
+						[class.is-invalid]="
+							passwordForm.get('confirmPassword')?.invalid &&
+							passwordForm.get('confirmPassword')?.touched
+						"
+					/>
+					<button
+						type="button"
+						(click)="toggleConfirmPasswordVisibility()"
+						class="visibility-btn"
+					>
+						<svg
+							*ngIf="showConfirmPassword"
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path
+								d="M17.94 17.94a10.37 10.37 0 0 1-5.94 1.94C7.39 19.88 4.26 16.89 2 12c2.26-4.89 5.39-7.88 9.94-7.88 2.04 0 3.97.54 5.69 1.49"
+							></path>
+							<path d="M1 1l22 22"></path>
+						</svg>
+						<svg
+							*ngIf="!showConfirmPassword"
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path
+								d="M1.5 12S4.5 6 12 6s10.5 6 10.5 6-3 6-10.5 6S1.5 12 1.5 12z"
+							></path>
+							<circle cx="12" cy="12" r="3"></circle>
+						</svg>
+					</button>
+				</div>
+			</div>
+
+			<!-- Botón para enviar el formulario -->
+			<div class="actions">
+				<button
+					type="submit"
+					class="generic-boton azul-btn"
+					[disabled]="passwordForm.invalid"
+				>
+					Actualizar Contraseña
+				</button>
+			</div>
+		</form>
+	</div>
+
+	<div class="logo-container">
+		<img src="assets/img/orbitCRM.png" id="img_logo" alt="OrbitCRM Logo" />
+	</div>
+</div>

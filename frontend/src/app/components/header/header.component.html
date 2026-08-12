@@ -1,0 +1,27 @@
+<mat-toolbar class="topbar">
+
+    <button mat-icon-button (click)="toggleMobileNav.emit()" *ngIf="!showToggle">
+        <mat-icon class="icon-20 d-flex">menu</mat-icon>
+    </button>
+
+    <span>{{ currentRoute }}</span>
+
+    <span class="flex-1-auto"></span>
+
+    <button [matMenuTriggerFor]="profilemenu" class="matero-user-panel">
+        <span class="header-name">{{user.fullname.split(" ")[0]}}</span>
+        <img class="matero-user-panel-avatar" [src]="user.photo || '/assets/img/profile/profile-default.png'"
+            alt="avatar" width="64" />
+    </button>
+
+    <mat-menu #profilemenu="matMenu" xPosition="before" class="topbar-dd cardWithShadow">
+        <button mat-menu-item (click)="goToProfile()">
+            <mat-icon class="d-flex align-items-center">person</mat-icon>
+            Mi perfil
+        </button>
+
+        <div class="p-x-12 m-t-12">
+            <a mat-flat-button color="primary" class="w-100" (click)="logout()">Cerrar sesión</a>
+        </div>
+    </mat-menu>
+</mat-toolbar>

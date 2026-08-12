@@ -1,0 +1,150 @@
+<!-- Componente que renderiza un modal para mostrar y editar la información de un evento en la agenda. -->
+<!-- Botón para cerrar el modal -->
+<div class="close-button-container">
+	<button
+		mat-icon-button
+		mat-dialog-close
+		aria-label="Cerrar"
+		class="floating-close-button"
+	>
+		<mat-icon>close</mat-icon>
+	</button>
+</div>
+
+<!-- Contenido del modal -->
+<div mat-dialog-content class="agendaForm">
+	<!-- Formulario para editar o agregar una Tarea o Actividad -->
+	<form [formGroup]="eventForm">
+
+        <!-- Mostrar el nombre de quien crea la tarea -->
+        <div class="mb-3">
+			<div *ngIf="createdByName" class="title_created_by_name">
+						Crea: {{ createdByName }} <span *ngIf="corporateName !='' && corporateName != null ">- {{corporateName}}</span>
+			</div>
+          </div>
+		<br>
+		<!-- Campo para el título de la Tarea-->
+		<mat-form-field style="height: 70px;" appearance="outline" class="w-100" color="primary">
+			<mat-label>Título de la tarea o actividad</mat-label>
+			<input matInput formControlName="title" maxlength="50" />
+		</mat-form-field>
+
+		<!-- Campo para la descripción de la Tarea-->
+		<mat-form-field style="height: 70px;" appearance="outline" class="w-100" color="primary">
+			<mat-label>Descripción</mat-label>
+			<input matInput formControlName="subtext" maxlength="300" />
+		</mat-form-field>
+
+
+		<!-- Campo para la prioridad del Tarea -->
+		<mat-form-field style="height: 70px;" appearance="outline" class="w-100" color="primary">
+			<mat-label>Prioridad</mat-label>
+			<mat-select formControlName="priority">
+				<!-- Itera sobre el arreglo de prioridades y crea un option para cada una -->
+				<mat-option [ngClass]="'primary'" value="primary"
+					><span class="color-box select-primary"></span>
+					Baja</mat-option
+				>
+				<mat-option [ngClass]="'success'" value="success"
+					><span class="color-box select-success"></span>
+					Media</mat-option
+				>
+				<mat-option [ngClass]="'warning'" value="warning"
+					><span class="color-box select-warning"></span>
+					Alta</mat-option
+				>
+				<mat-option [ngClass]="'danger'" value="danger"
+					><span class="color-box select-danger"></span> Muy
+					alta</mat-option
+				>
+			</mat-select>
+		</mat-form-field>
+
+		<!-- Campo para la fecha de la Tarea -->
+		<mat-form-field style="height: 70px;" appearance="outline" class="w-100" color="primary">
+			<mat-label>Fecha</mat-label>
+			<input matInput formControlName="date" [matDatepicker]="picker" [min]="today" />
+			<mat-datepicker-toggle
+				matSuffix
+				[for]="picker"
+			></mat-datepicker-toggle>
+			<mat-datepicker #picker></mat-datepicker>
+		</mat-form-field>
+
+		<!-- Campo para la hora del Tarea-->
+		<mat-form-field style="height: 70px;" appearance="outline" class="w-100" color="primary">
+			<mat-label>Hora</mat-label>
+			<mat-select formControlName="time">
+				<!-- Itera sobre el arreglo de horas y crea un option para cada una -->
+				<mat-option *ngFor="let hour of hours" [value]="hour">{{
+					hour
+				}}</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<!-- Campo para asignar un cliente (solo visible si NO está en modo edición) -->
+		<mat-form-field style="height: 70px;" *ngIf="!data.isEditing" appearance="outline" class="w-100" color="primary">
+		<mat-label>Selecciona la empresa</mat-label>
+		<mat-select formControlName="client">
+  		<mat-option *ngFor="let client of clients" [value]="client.id">
+			{{ client.corporate_name }}
+  		</mat-option>
+		</mat-select>
+		</mat-form-field>
+
+		<!-- Campo para asignar un colaborador -->
+		<mat-form-field style="height: 70px;" appearance="outline" class="w-100" color="primary">
+			<mat-label>Asignar colaborador</mat-label>
+			<mat-select formControlName="collaborator">
+				<!-- Itera sobre el arreglo de colaboradores y crea un option para cada uno -->
+				<mat-option *ngFor="let collaborator of collaborators" [value]="collaborator.email">
+					{{ collaborator.fullname }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<!-- Campo para marcar la tarea como completado -->
+		<mat-checkbox formControlName="completed" color="primary"
+			>¿Tarea completada?</mat-checkbox
+		>
+
+		<!-- Botones para guardar o cancelar el formulario -->
+		<div mat-dialog-actions class="text-center">
+			<div class="col-md-6" *ngIf="data.isEditing">
+				<!-- Botón para eliminar Tarea-->
+				<button
+					mat-flat-button
+					color="warn"
+					class="w-100 m-b-4"
+					(click)="onDelete()"
+				>
+					<mat-icon>delete_outline</mat-icon> Eliminar Tarea
+				</button>
+			</div>
+			<div class="col-md-6" *ngIf="!data.isEditing">
+				<!-- Botón para cancelar el formulario -->
+				<button
+					mat-flat-button
+					color="accent"
+					class="w-100 m-b-4"
+					(click)="onCancel()"
+				>
+					<mat-icon>close</mat-icon> Cancelar
+				</button>
+			</div>
+			<div class="col-md-6">
+				<!-- Botón para guardar o agregar Tarea -->
+				<button
+					mat-flat-button
+					color="primary"
+					class="button-responsive w-100 m-b-4"
+					(click)="onSubmit()"
+					[disabled]="!eventForm.valid"
+				>
+					<mat-icon>save</mat-icon>
+					{{ data.isEditing ? "Guardar cambios" : "Agregar Tarea" }}
+				</button>
+			</div>
+		</div>
+	</form>
+</div>

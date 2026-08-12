@@ -1,0 +1,79 @@
+// Establece el borde redondeado para los campos de formulario
+//
+//   mdc-text-field--outlined es una clase de Angular Material que se aplica a
+//   los campos de formulario con borde y que provoca que se dibuje un borde
+//   redondeado.
+
+// .agendaForm .mdc-text-field--outlined{
+// 	height: 100px;
+// }
+
+.mdc-text-field--outlined {
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__trailing,
+    .mdc-notched-outline__notch {
+        border-color: $borderformColor;
+    }
+
+    .mdc-notched-outline .mdc-notched-outline__leading {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+        width: $border-radius;
+    }
+
+    .mdc-notched-outline .mdc-notched-outline__trailing {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+    }
+}
+
+// Establece el tamaño de la fuente para las etiquetas de los campos de
+// formulario
+//
+//   mdc-form-field>label es una clase de Angular Material que se aplica a
+//   las etiquetas de los campos de formulario y que provoca que se dibuje
+//   el texto con un tamaño de fuente de 14px.
+
+.mdc-form-field>label {
+    font-size: 14px;
+}
+
+// Establece una altura fija para los campos de formulario
+//
+//   .mat-mdc-form-field es una clase de Angular Material que se aplica a
+//   los campos de formulario y que provoca que se dibuje con una altura de
+//   44px.
+//
+//   .mat-mdc-form-field-flex es una clase de Angular Material que se aplica
+//   a los campos de formulario y que provoca que se dibuje con una altura de
+//   44px y que se centre verticalmente.
+
+// .mat-mdc-form-field {
+//   height: 44px;
+//   .mat-mdc-form-field-flex {
+//     height: 44px;
+//     align-items: center;
+//   }
+// }
+
+// Oculta las sugerencias de los campos de formulario
+//
+//   .hide-hint es una clase que se aplica a los campos de formulario y que
+//   provoca que se oculten las sugerencias.
+
+.hide-hint {
+    .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }
+}
+
+// Establece un borde redondeado para los diálogos
+//
+//   .mat-mdc-dialog-container es una clase de Angular Material que se aplica
+//   a los diálogos y que provoca que se dibuje con un borde redondeado.
+
+//Se comento esta ya que es el border de la tarjeta
+// .mat-mdc-dialog-container .mdc-dialog__surface {
+//     border-radius: $border-radius !important;
+// }

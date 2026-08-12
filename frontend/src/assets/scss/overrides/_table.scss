@@ -1,0 +1,11 @@
+// Establece el padding para las celdas y t tulos de la tabla
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+    padding: 16px;
+}
+
+// Establece el color del borde inferior para las celdas y t tulos de la tabla
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+    border-bottom-color: $borderColor;
+}

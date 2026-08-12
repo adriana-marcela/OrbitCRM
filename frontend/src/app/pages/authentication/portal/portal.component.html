@@ -1,0 +1,37 @@
+<div class="conteiner-portal">
+
+<section class="hero">
+	<div class="hero-content">
+	  <h1>Bienvenido a OrbitCRM</h1>
+	  <p>Administra y gestiona clientes, colaboradores, servicios y pagos.</p>
+	  <button style="background-color: orange; margin-top: -5px;"  mat-raised-button (click)="irALogin()">Ingresar</button>
+	</div>
+  </section>
+
+  <section class="integraciones-carousel">
+	<div class="carousel-container">
+	  <button class="nav-button left" (click)="scrollLeft()">
+		<mat-icon>chevron_left</mat-icon>
+	  </button>
+
+	  <div class="carousel" #carousel>
+		<div class="custom-card" *ngFor="let item of integraciones">
+		  <div class="card-header">
+			<mat-icon>{{ item.icon }}</mat-icon>
+			<h3>{{ item.title }}</h3>
+		  </div>
+		  <img [src]="item.image" alt="{{ item.title }}" />
+		  <p>{{ item.description }}</p>
+		</div>
+	  </div>
+
+	  <button class="nav-button right" (click)="scrollRight()">
+		<mat-icon>chevron_right</mat-icon>
+	  </button>
+	</div>
+  </section>
+
+  <section class="footer">
+	<p>Todos los derechos reservados © 2025 | OrbitCRM — Proyecto académico</p>
+  </section>
+</div>

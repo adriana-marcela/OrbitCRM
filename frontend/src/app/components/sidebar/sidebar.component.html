@@ -1,0 +1,14 @@
+<!-- Contenedor del menú lateral -->
+<div class="flex-layout sidenav-container">
+    <!-- Componente que muestra el logo y el nombre de la aplicación -->
+    <app-branding></app-branding>
+
+    <!-- Menú lateral -->
+    <mat-nav-list class="sidebar-list">
+        <!-- Itera sobre el array de items del menú lateral y pasa cada item al componente app-nav-item -->
+        <app-nav-item *ngFor="let item of navItems" [item]="item" (toggleMobileNav)="handleNavItemClick()"></app-nav-item>
+    </mat-nav-list>
+
+    <!-- Espacio entre el menú y el pie de página -->
+    <span class="flex-1-auto"></span>
+</div>

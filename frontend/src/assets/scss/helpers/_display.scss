@@ -1,0 +1,21 @@
+/**
+ * Este archivo se encarga de generar las utilidades de CSS
+ * para el display de los componentes.
+ * Las utilidades son las clases que se pueden
+ * utilizar en los componentes para darles un estilo determinado.
+ * Las utilidades se generan en base a los valores definidos en el
+ * archivo variables.scss y se guardan en una variable llamada
+ * $utilities. Luego se itera sobre esta variable y se generan las
+ * clases CSS correspondientes.
+ * Las utilidades se pueden agrupar en categorías como display, flexbox,
+ * spacing, border, etc. Cada categoría tiene su propia variable
+ * $utilities que se utiliza para generar las clases CSS.
+ */
+
+@use 'variables';
+
+$utilities: (
+    'display': (property: display,
+        class: d,
+        values: inline inline-block block grid table table-row table-cell flex inline-flex none)
+);
