@@ -13,6 +13,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+        # Estos campos los administra el sistema (no el formulario de edición).
+        # Si no se protegen, cualquier PUT/PATCH que no los incluya los
+        # resetea a su valor por defecto (False), quitando permisos sin querer.
+        read_only_fields = [
+            'is_staff', 'is_superuser', 'is_active',
+            'last_login', 'date_joined', 'groups', 'user_permissions',
+        ]
     
     def get_assigned_clients(self, obj):
         assignment = UserClientAssignment.objects.filter(user=obj).first()

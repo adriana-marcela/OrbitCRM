@@ -6,6 +6,8 @@ import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-m
 import { rolModel } from '../../../pages/dashboard/roles/model/roles.model';
 import { collaboratorModel } from '../../../pages/dashboard/collaborators/model/collaborator.model';
 import { bancos, Countries, OptimizeImg, formatDate } from '../../../utils/Utils'
+import { ApiService } from '../../../services/api.service';
+import { firstValueFrom } from 'rxjs';
 
 /**
  * Componente que renderiza un modal para agregar un nuevo colaborador.
@@ -54,6 +56,7 @@ export class AddCollaboratorModalComponent {
 	constructor(
 		private fb: FormBuilder,
 		private dialog: MatDialog,
+		private apiService: ApiService,
 		public dialogRef: MatDialogRef<AddCollaboratorModalComponent>,
 		@Inject(MAT_DIALOG_DATA)
 		public data: { collaborator: collaboratorModel, roles :rolModel[] }
@@ -240,7 +243,7 @@ export class AddCollaboratorModalComponent {
 	/**
 	 * Función llamada cuando el usuario completa la información bancaria del colaborador.
 	 */
-	saveInfo(): void {
+	async saveInfo(): Promise<void> {
 		this.collabFormData.append('name', this.collaboratorForm.value.name);
 		this.collabFormData.append(
 			'lastname',
@@ -299,6 +302,25 @@ export class AddCollaboratorModalComponent {
 			this.bankForm.value.accountNumber
 		);
 
+		// Guarda de verdad en el servidor ANTES de mostrar cualquier mensaje de éxito.
+		try {
+			await firstValueFrom(
+				this.apiService.postData(`users/colaborator`, this.collabFormData)
+			);
+		} catch (error) {
+			console.error('Error al crear colaborador:', error);
+			this.dialog.open(ConfirmationModalComponent, {
+				width: '400px',
+				data: {
+					title: 'No se pudo crear',
+					message:
+						'Ocurrió un error al crear el colaborador. Revisa los datos e inténtalo de nuevo.',
+					isConfirm: false,
+				},
+			});
+			return; // No cierra el modal, así puedes corregir y reintentar.
+		}
+
 		this.dialog.open(ConfirmationModalComponent, {
 			width: '400px',
 			data: {
@@ -307,7 +329,7 @@ export class AddCollaboratorModalComponent {
 				isConfirm: false,
 			},
 		});
-		this.dialogRef.close(this.collabFormData);
+		this.dialogRef.close({ success: true });
 	}
 
 	onInput(

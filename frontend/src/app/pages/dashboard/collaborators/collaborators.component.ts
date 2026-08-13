@@ -144,16 +144,10 @@ export class CollaboratorsComponent {
                 data: { collaborator: collaborator, roles: rols },
             });
 
-            dialogRef.afterClosed().subscribe(async (updatedCollaborator) => {
-                if (updatedCollaborator) {
-                    try {
-                        // Actualiza el colaborador en la API
-                        await firstValueFrom(this.apiService.putData(`users/${updatedCollaborator.get("email")}`, updatedCollaborator));
-                    } catch (error) {
-                        console.error('Fail:', error);
-                    }
+            dialogRef.afterClosed().subscribe((result) => {
+                if (result?.success) {
+                    this.getColaborators();
                 }
-                this.getColaborators();
             });
         }
     }
@@ -169,15 +163,9 @@ export class CollaboratorsComponent {
 			data: { collaborator: {}, roles: rols },
 		});
 
-        dialogRef.afterClosed().subscribe(async (newCollaborator: collaboratorModel) => {
-            if (newCollaborator) {
-                try {
-                    // Agrega el nuevo colaborador a la API
-                    await firstValueFrom(this.apiService.postData(`users/colaborator`, newCollaborator));
-                    this.getColaborators();
-                } catch (error) {
-                    console.error('Fail:', error);
-                }
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result?.success) {
+                this.getColaborators();
             }
         });
     }
