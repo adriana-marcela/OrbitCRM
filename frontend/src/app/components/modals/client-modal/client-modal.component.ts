@@ -841,7 +841,7 @@ export class ClientModalComponent {
 		});
 	}
 
-	saveGeneralInfo(origin: string = ''): void {
+	async saveGeneralInfo(origin: string = ''): Promise<void> {
 		if (this.data.action === 'update') {
 			// Esta editando
 			if (origin == 'tributario') {
@@ -854,6 +854,50 @@ export class ClientModalComponent {
 			this.addDataClient();
 			this.addDataTributary();
 		}
+
+		// Guarda de verdad en el servidor ANTES de mostrar cualquier mensaje de éxito.
+		try {
+			if (this.data.action === 'update') {
+				if (origin == 'tributario') {
+					await firstValueFrom(
+						this.apiService.postData(
+							`clients/${this.data.client.id}/tributary/all`,
+							this.tributaryFormData
+						)
+					);
+				} else {
+					await firstValueFrom(
+						this.apiService.putData(
+							`clients/${this.data.client.id}`,
+							this.clientFormData
+						)
+					);
+				}
+			} else {
+				const createdClient: any = await firstValueFrom(
+					this.apiService.postData(`clients`, this.clientFormData)
+				);
+				await firstValueFrom(
+					this.apiService.postData(
+						`clients/${createdClient.id}/tributary/all`,
+						this.tributaryFormData
+					)
+				);
+			}
+		} catch (error) {
+			console.error('Error al guardar cliente:', error);
+			this.dialog.open(ConfirmationModalComponent, {
+				width: '400px',
+				data: {
+					title: 'No se pudo guardar',
+					message:
+						'Ocurrió un error al guardar la información. Revisa los datos e inténtalo de nuevo.',
+					isConfirm: false,
+				},
+			});
+			return; // No cierra el modal, así puedes corregir y reintentar.
+		}
+
 		const message =
 			this.data.action === 'update'
 				? 'Información actualizada exitosamente.'
@@ -868,12 +912,8 @@ export class ClientModalComponent {
 			},
 		});
 
-		this.dialogRef.close({
-			clientFormData: this.clientFormData,
-			tributaryFormData: this.tributaryFormData,
-			client_id: this.data.client.id,
-			origin: origin,
-		});
+		// El servidor ya confirmó el guardado; el padre solo necesita refrescar la lista.
+		this.dialogRef.close({ success: true, origin });
 	}
 
 	editRow(element: any, accion: string): void {

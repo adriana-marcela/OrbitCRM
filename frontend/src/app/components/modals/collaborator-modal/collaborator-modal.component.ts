@@ -295,8 +295,29 @@ export class CollaboratorModalComponent {
 	}
 
 	// Guarda la información general del colaborador
-	saveGeneralInfo(): void {
+	async saveGeneralInfo(): Promise<void> {
 		this.addToForm();
+
+		try {
+			await firstValueFrom(
+				this.apiService.putData(
+					`users/${this.data.collaborator.email}`,
+					this.collabFormData
+				)
+			);
+		} catch (error) {
+			console.error('Error al guardar colaborador:', error);
+			this.dialog.open(ConfirmationModalComponent, {
+				width: '400px',
+				data: {
+					title: 'No se pudo guardar',
+					message:
+						'Ocurrió un error al guardar la información. Revisa los datos e inténtalo de nuevo.',
+					isConfirm: false,
+				},
+			});
+			return; // No cierra el modal, así puedes corregir y reintentar.
+		}
 
 		const successDialogRef = this.dialog.open(ConfirmationModalComponent, {
 			width: '400px',
@@ -308,7 +329,7 @@ export class CollaboratorModalComponent {
 		});
 
 		successDialogRef.afterClosed().subscribe(() => {
-			this.dialogRef.close(this.collabFormData);
+			this.dialogRef.close({ success: true });
 		});
 	}
 

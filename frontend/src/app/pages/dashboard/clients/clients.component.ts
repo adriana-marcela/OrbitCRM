@@ -157,34 +157,10 @@ export class ClientsComponent {
 			},
 		});
 
-		dialogRef.afterClosed().subscribe(async (result) => {
-			if (result.origin == 'tributario') {
-				try {
-					const data = await firstValueFrom(
-						this.apiService.postData(
-							`clients/${result.client_id}/tributary/all`,
-							result.tributaryFormData
-						)
-					);
-				} catch (error) {
-					console.error('Fail:', error);
-				}
-			} else {
-				const updatedClient = result.clientFormData;
-				if (updatedClient) {
-					try {
-						const data = await firstValueFrom(
-							this.apiService.putData(
-								`clients/${updatedClient.get('id')}`,
-								updatedClient
-							)
-						);
-					} catch (error) {
-						console.error('Fail:', error);
-					}
-				}
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result?.success) {
+				this.getClients();
 			}
-			this.getClients();
 		});
 	}
 
@@ -205,22 +181,9 @@ export class ClientsComponent {
 			},
 		});
 
-        dialogRef.afterClosed().subscribe(async (result) => {
-            if (result) {
-                try {
-                    const createdClient = await firstValueFrom(
-                        this.apiService.postData(`clients`, result.clientFormData)
-                    );
-                    const clientId = createdClient.id;
-                    // Crear tributarias usando el ID obtenido
-                    const tributaryResponse = await firstValueFrom(
-                        this.apiService.postData(`clients/${clientId}/tributary/all`, result.tributaryFormData)
-                    );
-                    this.getClients();
-
-                } catch (error) {
-                    console.error('Error al crear cliente o tributarias:', error);
-                }
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result?.success) {
+                this.getClients();
             }
         });
     }

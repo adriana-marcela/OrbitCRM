@@ -85,9 +85,14 @@ class CreateUserView(generics.CreateAPIView):
             validated_data.pop('groups', None)
             validated_data.pop('user_permissions', None)
 
-            User.objects.create_superuser(
+            # is_staff se deriva del rol elegido en el formulario, no se fuerza.
+            rol = validated_data.get('rol')
+            is_staff = bool(rol.is_staff) if rol else False
+
+            User.objects.create_user(
                 email=email,
                 password=password,
+                is_staff=is_staff,
                 **validated_data
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
