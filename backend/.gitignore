@@ -4,11 +4,9 @@
 *.pyc
 __pycache__
 # Extra
-.env
 venv
-# Nota: las migraciones SÍ deben subirse a git, no excluirlas.
-# (Antes esta línea decía "migrations/" y causaba que se perdieran
-# migraciones al clonar el repo en otra máquina.)
+migrations/
+!*/migrations/__init__.py
 
 # Visual Studio Code # 
 .vscode/* 
