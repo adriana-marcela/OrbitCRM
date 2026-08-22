@@ -15,14 +15,12 @@ para optimizar los procesos empresariales y fortalecer las interacciones con los
 clientes: seguimiento de clientes, servicios contratados, historial de pagos, agenda,
 chat interno y roles/permisos por usuario.
 
-Este repositorio se comparte como **proyecto académico / de portafolio**. Los datos
-reales del cliente original fueron eliminados; el proyecto incluye un usuario y datos
-de muestra 100% ficticios para que cualquiera pueda explorarlo sin riesgo.
+Este repositorio se comparte como **proyecto académico / de portafolio**. El proyecto incluye un usuario y datos de muestra 100% ficticios para que cualquiera pueda explorarlo sin riesgo.
 
 ## 🧪 Prueba el CRM (usuario demo)
 
 Puedes iniciar sesión con un usuario de **solo lectura**, para que puedas navegar por
-todos los módulos sin poder crear, editar ni borrar la información de muestra:
+los módulos autorizados sin poder crear, editar ni borrar la información de muestra:
 
 ```
 Correo:      demo@orbitcrm.com
@@ -46,20 +44,28 @@ Contraseña:  Demo2025!
 ```bash
 cd backend
 python -m venv venv
+
+# Crea el entorno virtual en tu carpeta
+python -m venv venv
+#Activa el entorno virtual 
 venv\Scripts\Activate.ps1      # En Windows (PowerShell)
 # source venv/bin/activate     # En macOS/Linux
 
+#Instala las bibliotecas y paquetes externos
 pip install -r requirements.txt
-```
 
-Copia `.env.example` como `.env` dentro de `backend/src/` y completa tus propios
-valores (ver detalle en [`backend/README.md`](backend/README.md)).
-
-```bash
+#Instala las migraciones
 python manage.py migrate
-python manage.py create_rol_and_permissions   # crea roles y permisos base
-python manage.py seed_demo_data                # crea el usuario y datos demo
+
+#Ejecuta el backend 
 python manage.py runserver
+
+# Nota adicional: comandos utiles 
+# para desactivar el entono virtual 
+deactivate 
+#Para limpiar la consola
+cls 
+
 ```
 
 ### 2. Frontend
