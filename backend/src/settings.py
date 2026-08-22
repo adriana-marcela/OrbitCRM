@@ -24,13 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# El valor por defecto solo se usa si no hay SECRET_KEY en el .env (uso académico/local).
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-2he@%9q+e38u8!t1*oi4f&4-4_zk-_v0d0hwsa1v^skoc9=^8i')
+SECRET_KEY = 'django-insecure-2he@%9q+e38u8!t1*oi4f&4-4_zk-_v0d0hwsa1v^skoc9=^8i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = True 
+#os.getenv("ENVIRONMENT") == "development"
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -119,6 +119,8 @@ WSGI_APPLICATION = 'src.wsgi.application'
 #CORS compatibilidad peticiones entre aplicaciones
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # La URL de tu aplicación Angular
+    "https://staging.d1fslohnaqvflh.amplifyapp.com",
+    "https://okweb.one",
     "http://localhost:8080",
 ]
 

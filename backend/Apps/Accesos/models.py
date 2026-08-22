@@ -14,7 +14,7 @@ class Access(models.Model):
     name = models.CharField(max_length=30, blank=True)
     user = models.CharField(max_length=30, blank=True)
     password = models.CharField(max_length=30, blank=True)
-    url = models.CharField(max_length=200, blank=True)
+    url = models.CharField(blank=True, max_length=255)
     pin = models.CharField(max_length=30, blank=True)
     type = models.CharField(
         choices=ACCESS_tYPE, 

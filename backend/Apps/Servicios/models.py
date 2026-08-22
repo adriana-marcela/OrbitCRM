@@ -17,7 +17,7 @@ class Services(models.Model):
         max_length=12,
         verbose_name='Categoria del servicio'
     )
-    url = models.CharField(max_length=200, blank=True)
+    url = models.CharField(blank=True, max_length=255)
     #interno
     updated_at = models.DateTimeField(auto_now=True) 
     def __str__(self):
